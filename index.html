@@ -1408,10 +1408,48 @@
             return titles[page] || 'Главная';
         }
 
+        // Настройка пагинации
+        function setupPagination() {
+            const itemsPerPage = 6;
+            const pageCount = Math.ceil(items.length / itemsPerPage);
+            
+            paginationContainer.innerHTML = '';
+            
+            for (let i = 1; i <= pageCount; i++) {
+                const button = document.createElement('button');
+                button.textContent = i;
+                button.addEventListener('click', () => {
+                    // Убираем активный класс у всех кнопок
+                    document.querySelectorAll('.pagination button').forEach(btn => {
+                        btn.classList.remove('active');
+                    });
+                    button.classList.add('active');
+                    
+                    // Показываем элементы для выбранной страницы
+                    showPage(i, itemsPerPage);
+                });
+                
+                if (i === 1) button.classList.add('active');
+                
+                paginationContainer.appendChild(button);
+            }
+            
+            // Показываем первую страницу при загрузке
+            showPage(1, itemsPerPage);
+        }
+
+        // Функция показа страницы
+        function showPage(pageNumber, itemsPerPage) {
+            const startIndex = (pageNumber - 1) * itemsPerPage;
+            const endIndex = startIndex + itemsPerPage;
+            const pageItems = items.slice(startIndex, endIndex);
+            
+            renderAllItems(pageItems);
+        }
+
         // Инициализация приложения
         document.addEventListener('DOMContentLoaded', function() {
             renderFeaturedItems();
-            renderAllItems();
             setupPagination();
             renderGeneralCategories();
             setupEventListeners();
@@ -1468,15 +1506,33 @@
         // Простая функция поиска
         function performSearch(query) {
             if (!query.trim()) {
+                // Если поиск пустой, показываем первую страницу всех элементов
+                showPage(1, 6);
+                setupPagination(); // Пересоздаём пагинацию для всех элементов
                 return items;
             }
 
             const lowerQuery = query.toLowerCase();
-            return items.filter(item => 
+            const filteredItems = items.filter(item => 
                 item.title.toLowerCase().includes(lowerQuery) ||
                 item.description.toLowerCase().includes(lowerQuery) ||
                 item.tags.some(tag => tag.toLowerCase().includes(lowerQuery))
             );
+            
+            // Для результатов поиска убираем пагинацию
+            renderAllItems(filteredItems);
+            paginationContainer.innerHTML = ''; // Скрываем пагинацию при поиске
+            
+            if (filteredItems.length === 0) {
+                allItemsContainer.innerHTML = `
+                    <div class="no-items">
+                        <h3>Ничего не найдено</h3>
+                        <p>Попробуйте изменить запрос поиска</p>
+                    </div>
+                `;
+            }
+            
+            return filteredItems;
         }
 
         // Рендер обобщенных категорий
@@ -1560,10 +1616,10 @@
             });
         }
 
-        // Рендер всех элементов
-        function renderAllItems(filteredItems = items) {
+        // Рендер всех элементов (теперь принимает массив для отображения)
+        function renderAllItems(itemsToRender = items) {
             allItemsContainer.innerHTML = '';
-            filteredItems.forEach(item => {
+            itemsToRender.forEach(item => {
                 allItemsContainer.appendChild(createItemCard(item));
             });
         }
@@ -1617,29 +1673,6 @@
             return card;
         }
 
-        // Настройка пагинации
-        function setupPagination() {
-            const itemsPerPage = 6;
-            const pageCount = Math.ceil(items.length / itemsPerPage);
-            
-            paginationContainer.innerHTML = '';
-            
-            for (let i = 1; i <= pageCount; i++) {
-                const button = document.createElement('button');
-                button.textContent = i;
-                button.addEventListener('click', () => {
-                    document.querySelectorAll('.pagination button').forEach(btn => {
-                        btn.classList.remove('active');
-                    });
-                    button.classList.add('active');
-                });
-                
-                if (i === 1) button.classList.add('active');
-                
-                paginationContainer.appendChild(button);
-            }
-        }
-
         // Настройка обработчиков событий
         function setupEventListeners() {
             // Навигация
@@ -1656,27 +1689,77 @@
                     
                     // Обновляем хлебные крошки
                     updateBreadcrumbs(targetPage);
-                });
-            });
-            
-            // Поиск
-            searchButtons.forEach((button, index) => {
-                button.addEventListener('click', () => {
-                    const query = searchInputs[index].value;
-                    const filteredItems = performSearch(query);
-                    renderAllItems(filteredItems);
-                });
-            });
-            
-            searchInputs.forEach(input => {
-                input.addEventListener('keyup', (e) => {
-                    if (e.key === 'Enter') {
-                        const query = input.value;
-                        const filteredItems = performSearch(query);
-                        renderAllItems(filteredItems);
+
+                    // Если переходим на страницу элементов, восстанавливаем пагинацию
+                    if (targetPage === 'items') {
+                        setupPagination();
                     }
                 });
             });
+            
+            // Поиск на главной странице - переходит на страницу элементов с результатами
+            const homeSearchInput = document.querySelector('#home-page .search-input');
+            const homeSearchBtn = document.querySelector('#home-page .search-btn');
+            
+            if (homeSearchBtn) {
+                homeSearchBtn.addEventListener('click', () => {
+                    const query = homeSearchInput.value;
+                    if (query.trim()) {
+                        // Переходим на страницу элементов
+                        navLinks.forEach(l => l.classList.remove('active'));
+                        document.querySelector('a[href="#items"]').classList.add('active');
+                        
+                        pages.forEach(page => page.classList.remove('active'));
+                        document.getElementById('items-page').classList.add('active');
+                        
+                        updateBreadcrumbs('items');
+                        
+                        // Выполняем поиск
+                        performSearch(query);
+                    }
+                });
+            }
+
+            if (homeSearchInput) {
+                homeSearchInput.addEventListener('keyup', (e) => {
+                    if (e.key === 'Enter') {
+                        const query = homeSearchInput.value;
+                        if (query.trim()) {
+                            // Переходим на страницу элементов
+                            navLinks.forEach(l => l.classList.remove('active'));
+                            document.querySelector('a[href="#items"]').classList.add('active');
+                            
+                            pages.forEach(page => page.classList.remove('active'));
+                            document.getElementById('items-page').classList.add('active');
+                            
+                            updateBreadcrumbs('items');
+                            
+                            // Выполняем поиск
+                            performSearch(query);
+                        }
+                    }
+                });
+            }
+            
+            // Поиск на странице элементов
+            const itemsSearchInput = document.querySelector('#items-page .search-input');
+            const itemsSearchBtn = document.querySelector('#items-page .search-btn');
+            
+            if (itemsSearchBtn) {
+                itemsSearchBtn.addEventListener('click', () => {
+                    const query = itemsSearchInput.value;
+                    performSearch(query);
+                });
+            }
+
+            if (itemsSearchInput) {
+                itemsSearchInput.addEventListener('keyup', (e) => {
+                    if (e.key === 'Enter') {
+                        const query = itemsSearchInput.value;
+                        performSearch(query);
+                    }
+                });
+            }
             
             // Мобильное меню
             mobileMenuBtn.addEventListener('click', () => {
