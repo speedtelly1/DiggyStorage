@@ -277,11 +277,29 @@
             text-decoration: none;
             display: inline-block;
             text-align: center;
-            flex: 1;
+            flex: 2;
         }
 
         .resource-btn:hover {
             background: var(--primary-dark);
+        }
+
+        /* Кнопка "Читать" */
+        .read-more-btn {
+            background: #10B981;
+            color: white;
+            border: none;
+            border-radius: 6px;
+            padding: 8px 12px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: background-color 0.3s;
+            white-space: nowrap;
+            flex: 1;
+        }
+
+        .read-more-btn:hover {
+            background: #059669;
         }
 
         /* Стили для меню "Поделиться" */
@@ -300,6 +318,7 @@
             font-size: 0.9rem;
             transition: background-color 0.3s;
             white-space: nowrap;
+            flex: 1;
         }
 
         .share-btn:hover {
@@ -1082,7 +1101,8 @@
 {
     id: items.length + 1,
     title: "Название вашего ресурса",
-    description: "Описание вашего ресурса",
+    shortDescription: "Краткое описание вашего ресурса",
+    description: "Полное описание вашего ресурса",
     image: "images/ваше-изображение.png",
     tags: ["тег1", "тег2", "тег3"],
     url: "https://ссылка-на-ресурс.com"
@@ -1101,8 +1121,12 @@
                                 <span>Название ресурса (максимум 60 символов)</span>
                             </div>
                             <div class="field-item">
+                                <strong>shortDescription</strong>
+                                <span>Краткое описание для карточки (рекомендуется 60-120 символов)</span>
+                            </div>
+                            <div class="field-item">
                                 <strong>description</strong>
-                                <span>Краткое описание (рекомендуется 120-180 символов)</span>
+                                <span>Полное описание для статьи (можно несколько абзацев)</span>
                             </div>
                             <div class="field-item">
                                 <strong>image</strong>
@@ -1146,6 +1170,7 @@
                             <ul>
                                 <li>Название вашего ресурса</li>
                                 <li>Краткое описание</li>
+                                <li>Полное описание (если есть)</li>
                                 <li>Ссылку на сайт/ресурс</li>
                                 <li>Изображение (если есть)</li>
                                 <li>Ключевые теги/категории</li>
@@ -1185,7 +1210,8 @@
             {
                 id: 1,
                 title: "Тимошка из Москвы",
-                description: "Канал с контентом о мире Minecraft: от геймплея до создания проектов.",
+                shortDescription: "Канал про Minecraft с геймплеем и проектами",
+                description: "Канал с контентом о мире Minecraft: от геймплея до создания проектов. Здесь вы найдете обзоры, гайды и многое другое для любителей этой культовой игры. Регулярные стримы, интересные сборки и советы для новичков.",
                 image: "images/tim.png",
                 tags: ["ютуб", "майнкрафт", "игры", "новичок"],
                 url: "https://www.youtube.com/channel/UCrjrnsVgcgJJiV4En4ONoDA"
@@ -1193,7 +1219,8 @@
             {
                 id: 2,
                 title: "TAIPrompts",
-                description: "Создавайте идеальные промпты для нейросетей.",
+                shortDescription: "Создавайте идеальные промпты для нейросетей",
+                description: "Создавайте идеальные промпты для нейросетей. Научитесь формулировать запросы так, чтобы ИИ понимал вас с полуслова. От базовых принципов до продвинутых техник - всё в одном месте.",
                 image: "images/taiprompts.png",
                 tags: ["промпт", "нейросети", "современность", "вайбкодинг"],
                 url: "https://timoshamoscow.github.io/taiprompts.github.io/"
@@ -1201,7 +1228,8 @@
             {
                 id: 3,
                 title: "Сибилевец",
-                description: "Простой, логичный, современный. Создан Тимофеем Сибилевым для лёгкого общения.",
+                shortDescription: "Простой и логичный язык для общения",
+                description: "Простой, логичный, современный. Создан Тимофеем Сибилевым для лёгкого общения. Язык сочетает в себе простоту изучения и богатые выразительные возможности. Идеален для международного общения.",
                 image: "images/sib.png",
                 tags: ["лингвистика", "конланг", "простота", "3265"],
                 url: "https://timoshamoscow.github.io/sibylevec-site.github.io/"
@@ -1209,7 +1237,8 @@
             {
                 id: 4,
                 title: "Белойн",
-                description: "Дышите. Чувствуйте. Живите. Вне цифрового шума.",
+                shortDescription: "Детокс от цифрового шума",
+                description: "Дышите. Чувствуйте. Живите. Вне цифрового шума. Проект посвящен цифровому детоксу и осознанному использованию технологий. Практики, советы и inspiration для баланса между онлайн и офлайн жизнью.",
                 image: "images/belyoene.png",
                 tags: ["детокс", "природа", "тишина", "спокойствие"],
                 url: "https://timoshamoscow.github.io/belyoene.github.io/"
@@ -1217,7 +1246,8 @@
             {
                 id: 5,
                 title: "'Хули' - это мат?",
-                description: "Хули - это сленговое слово. СЛЕНГ - это не МАТ.",
+                shortDescription: "Разбираемся с сленгом и матом",
+                description: "Хули - это сленговое слово. СЛЕНГ - это не МАТ. Подробное объяснение разницы между сленгом, жаргоном и нецензурной лексикой. Лингвистический анализ современной русской речи.",
                 image: "images/hmm.png",
                 tags: ["вопрос", "ответ", "сленг"],
                 url: "https://sadalskij.livejournal.com/2845249.html"
@@ -1225,7 +1255,8 @@
             {
                 id: 6,
                 title: "Как зовут девушку домера?",
-                description: "Алина также известная как Аlino4kaPrincess - основная антагонистка каналов Domer Grief и Огород Домера, она является хейтершой Лены и одержимая фанатка Домера которая хочет выйти за него замуж. Сейчас же, с недавнего времени, она живет с Сергеем Камышниковым (Домером) и является его девушкой.",
+                shortDescription: "Вся правда об Алиночке и Домере",
+                description: "Алина также известная как Аlino4kaPrincess - основная антагонистка каналов Domer Grief и Огород Домера, она является хейтершой Лены и одержимая фанатка Домера которая хочет выйти за него замуж. Сейчас же, с недавнего времени, она живет с Сергеем Камышниковым (Домером) и является его девушкой. Полная история их отношений и развития событий в майнкрафт-сообществе.",
                 image: "images/alina.png",
                 tags: ["алиночка", "домер", "отношения", "майнкрафт"],
                 url: "https://taplink.cc/alino4kaprincssss"
@@ -1233,7 +1264,8 @@
             {
                 id: 7,
                 title: "Сибилевец на Duolingo",
-                description: "Официальная петиция к Duolingo с предложением добавить в инкубатор курс языка Сибилевец - простого и логичного лингвистического проекта.",
+                shortDescription: "Петиция по добавлению языка в Duolingo",
+                description: "Официальная петиция к Duolingo с предложением добавить в инкубатор курс языка Сибилевец - простого и логичного лингвистического проекта. Присоединяйтесь к сообществу и поддержите инициативу!",
                 image: "images/sib.png",
                 tags: ["лингвистика", "конланг", "язык", "петиция"],
                 url: "https://www.change.org/sibyleveconduolingo"
@@ -1241,7 +1273,8 @@
             {
                 id: 8,
                 title: "Хранилище",
-                description: "Хранилище с мета-тегами - это современная платформа для организации и управления цифровыми ресурсами. Хотите стать популярным на весь интернет? Добавьте ваш ресурс в наше хранилище!",
+                shortDescription: "Платформа для управления цифровыми ресурсами",
+                description: "Хранилище с мета-тегами - это современная платформа для организации и управления цифровыми ресурсами. Хотите стать популярным на весь интернет? Добавьте ваш ресурс в наше хранилище! Мы предоставляем удобные инструменты для категоризации, поиска и продвижения вашего контента.",
                 image: "images/hranit.png",
                 tags: ["хранилище", "разработка", "технологии", "популярность"],
                 url: "https://timoshamoscow.github.io/hranilishe.github.io/"
@@ -1249,7 +1282,8 @@
             {
                 id: 9,
                 title: "Название вашего ресурса",
-                description: "Описание вашего ресурса",
+                shortDescription: "Краткое описание вашего ресурса",
+                description: "Полное описание вашего ресурса с деталями, преимуществами и особенностями. Здесь можно разместить развернутую информацию о проекте, его целях и возможностях.",
                 image: "images/soon.png",
                 tags: ["тег1", "тег2", "тег3", "скоро"],
                 url: "https://ссылка-на-ресурс.com"
@@ -1257,7 +1291,8 @@
             {
                 id: 10,
                 title: "Cuby - Minecraft-сервера",
-                description: "Лучший Minecraft-сервер в СНГ!",
+                shortDescription: "Лучший Minecraft-сервер в СНГ",
+                description: "Лучший Minecraft-сервер в СНГ! Присоединяйтесь к нашему сообществу и наслаждайтесь ванильным геймплеем с кастомными плагинами. Регулярные ивенты, активное сообщество и качественная администрация.",
                 image: "images/cuby.png",
                 tags: ["майнкрафт", "сервер"],
                 url: "https://t.me/cuby_mc"
@@ -1265,7 +1300,8 @@
             {
                 id: 11,
                 title: "ICEBERG smp",
-                description: "Ванильные Minecraft-сервера с кастомными плагинами.",
+                shortDescription: "Ванильные сервера с кастомными плагинами",
+                description: "Ванильные Minecraft-сервера с кастомными плагинами. Уникальная атмосфера, сбалансированный геймплей и дружелюбное комьюнити. Идеально подходит для тех, кто ценит классический майнкрафт с современными улучшениями.",
                 image: "images/iceberg.png",
                 tags: ["майнкрафт", "сервер"],
                 url: "https://t.me/ICEBERG_Minecraft"
@@ -1347,7 +1383,8 @@
 
         // Функции для шаринга
         function createShareMessage(item) {
-            return `Хей! Посмотри какую крутую информацию я нашел!\n\n"${item.title}"\n${item.description}\n\nСсылка: ${item.url}\n\n#Хранилище\n\nА нашёл я это в самом лучшем Хранилище цифровых ресурсов: https://timoshamoscow.github.io/hranilishe.github.io/`;
+            const description = item.shortDescription || item.description;
+            return `Хей! Посмотри какую крутую информацию я нашел!\n\n"${item.title}"\n${description}\n\nСсылка: ${item.url}\n\n#Хранилище\n\nА нашёл я это в самом лучшем Хранилище цифровых ресурсов: https://timoshamoscow.github.io/hranilishe.github.io/`;
         }
 
         const shareHandlers = {
@@ -1384,6 +1421,101 @@
                 window.open(url, '_blank');
             }
         };
+
+        // Функция показа модального окна с полной статьей
+        function showArticleModal(item) {
+            const modal = document.createElement('div');
+            modal.className = 'modal active';
+            modal.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.8);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                z-index: 1000;
+                padding: 20px;
+            `;
+            
+            modal.innerHTML = `
+                <div class="modal-content" style="
+                    background: white;
+                    border-radius: 12px;
+                    padding: 2rem;
+                    max-width: 800px;
+                    width: 100%;
+                    max-height: 90vh;
+                    overflow-y: auto;
+                    position: relative;
+                ">
+                    <button class="close-article" style="
+                        position: absolute;
+                        top: 1rem;
+                        right: 1rem;
+                        background: none;
+                        border: none;
+                        font-size: 1.5rem;
+                        cursor: pointer;
+                        color: #666;
+                    ">&times;</button>
+                    
+                    <div class="article-header" style="margin-bottom: 2rem;">
+                        <h2 style="color: var(--primary-dark); margin-bottom: 1rem;">${item.title}</h2>
+                        <div style="display: flex; gap: 1rem; flex-wrap: wrap; margin-bottom: 1rem;">
+                            ${item.tags.map(tag => `<span style="background: rgba(74, 144, 226, 0.1); padding: 4px 8px; border-radius: 12px; font-size: 0.8rem; color: var(--primary-dark);">${tag}</span>`).join('')}
+                        </div>
+                    </div>
+                    
+                    <div class="article-content" style="line-height: 1.8; font-size: 1.1rem;">
+                        ${item.description.split('\n').map(paragraph => 
+                            `<p style="margin-bottom: 1rem;">${paragraph}</p>`
+                        ).join('')}
+                    </div>
+                    
+                    <div class="article-actions" style="margin-top: 2rem; padding-top: 1rem; border-top: 1px solid #eee;">
+                        <a href="${item.url}" target="_blank" class="resource-btn" style="display: inline-block; margin-right: 1rem;">🌐 Перейти к ресурсу</a>
+                        <button class="share-article-btn" style="
+                            background: var(--primary-color);
+                            color: white;
+                            border: none;
+                            padding: 10px 20px;
+                            border-radius: 6px;
+                            cursor: pointer;
+                        ">📤 Поделиться статьей</button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Закрытие модального окна
+            modal.querySelector('.close-article').addEventListener('click', () => {
+                document.body.removeChild(modal);
+            });
+            
+            modal.addEventListener('click', (e) => {
+                if (e.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            });
+            
+            // Шаринг статьи
+            modal.querySelector('.share-article-btn').addEventListener('click', () => {
+                shareHandlers.copy(item);
+            });
+            
+            // Закрытие по Escape
+            const handleEscape = (e) => {
+                if (e.key === 'Escape') {
+                    document.body.removeChild(modal);
+                    document.removeEventListener('keydown', handleEscape);
+                }
+            };
+            document.addEventListener('keydown', handleEscape);
+        }
 
         // Функции для хлебных крошек
         function updateBreadcrumbs(page, category = null, item = null) {
@@ -1524,6 +1656,7 @@
             const filteredItems = items.filter(item => 
                 item.title.toLowerCase().includes(lowerQuery) ||
                 item.description.toLowerCase().includes(lowerQuery) ||
+                item.shortDescription.toLowerCase().includes(lowerQuery) ||
                 item.tags.some(tag => tag.toLowerCase().includes(lowerQuery))
             );
             
@@ -1637,16 +1770,24 @@
             const card = document.createElement('div');
             card.className = 'item-card glass-effect';
             
+            // Используем shortDescription если есть, иначе обрезаем description
+            const displayDescription = item.shortDescription || 
+                (item.description.length > 120 ? item.description.substring(0, 120) + '...' : item.description);
+            
+            // Показываем кнопку "Читать" только если есть полное описание, отличное от короткого
+            const showReadMore = item.description && item.description.length > 120 && item.shortDescription !== item.description;
+            
             card.innerHTML = `
                 <img src="${item.image}" alt="${item.title}" class="item-image" title="${item.title}">
                 <div class="item-content">
                     <h3 class="item-title">${item.title}</h3>
-                    <p class="item-description">${item.description}</p>
+                    <p class="item-description">${displayDescription}</p>
                     <div class="item-tags" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 5px;">
                         ${item.tags.map(tag => `<span style="background: rgba(74, 144, 226, 0.1); padding: 3px 8px; border-radius: 12px; font-size: 0.8rem; color: var(--primary-dark);">${tag}</span>`).join('')}
                     </div>
                     <div class="item-actions">
                         <a href="${item.url}" target="_blank" class="resource-btn">Перейти к ресурсу</a>
+                        ${showReadMore ? '<button class="read-more-btn">📖 Читать</button>' : ''}
                         <div class="share-dropdown">
                             <button class="share-btn">📤 Поделиться</button>
                             <div class="share-menu">
@@ -1665,6 +1806,14 @@
             image.addEventListener('click', () => {
                 window.open(item.url, '_blank');
             });
+            
+            // Обработчик кнопки "Читать"
+            const readMoreBtn = card.querySelector('.read-more-btn');
+            if (readMoreBtn) {
+                readMoreBtn.addEventListener('click', () => {
+                    showArticleModal(item);
+                });
+            }
             
             // Обработчики для кнопок шаринга
             const shareOptions = card.querySelectorAll('.share-option');
