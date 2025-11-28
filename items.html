@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Хранилище цифровых ресурсов с мета-тегами - современная платформа для организации, управления и поиска цифрового контента. Каталогизация ресурсов по категориям и тегам.">
+    <meta name="keywords" content="хранилище, мета-теги, цифровые ресурсы, управление контентом, википедия, каталог ресурсов, категории, теги, поиск, организация контента">
+    <meta name="author" content="Тимофей">
+    <meta name="google-site-verification" content="jBY-ytvwYjSY1Jn9kXCqns11_XIrfqZlssMgNCpi8t0" />
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="images/hranit.png" type="image/png">
+    <title>Все элементы | Хранилище</title>
+
+</head>
+<body>
+    <!-- Шапка сайта -->
+    <header class="glass-effect">
+        <div class="header-container">
+            <div class="logo">
+                <span class="logo-icon">📁</span>
+                Хранилище
+            </div>
+            <button class="mobile-menu-btn">☰</button>
+            <nav>
+                <ul>
+                    <li><a href="index.html" class="nav-link active">Главная</a></li>
+                    <li><a href="items.html" class="nav-link">Элементы</a></li>
+                    <li><a href="" class="nav-link">Категории</a></li>
+                    <li><a href="" class="nav-link">О проекте</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Основной контент -->
+    <main>
+        <!-- Хлебные крошки -->
+        <nav class="breadcrumbs" id="breadcrumbs">
+            <a href="index.html">Главная</a>
+        </nav>
+
+        <!-- Страница элементов -->
+        <section id="items-page" class="page">
+            <h1 class="page-title">Все элементы</h1>
+            
+            <button class="add-item-btn" id="add-item-btn">
+                <span>+</span> Добавить элемент
+            </button>
+            
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Поиск по названию, описанию или мета-тегам...">
+                <button class="search-btn">Найти</button>
+            </div>
+            
+            <div class="items-grid" id="all-items">
+                <!-- Все элементы будут загружены через JS -->
+            </div>
+            
+            <div class="pagination" id="pagination">
+                <!-- Пагинация будет создана через JS -->
+            </div>
+        </section>
+  
+    <!-- Футер -->
+    <footer>
+        <div class="footer-container">
+            <div class="logo">
+                <span class="logo-icon">📁</span>
+                Хранилище
+            </div>
+            <div class="footer-links">
+                <a href="privacy.html">Политика конфиденциальности</a>
+                <a href="terms.html">Условия использования</a>
+            </div>
+            <div class="copyright">
+                &copy; 2025 Хранилище с мета-тегами. Все права защищены.
+            </div>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+
+</body>
+</html>
