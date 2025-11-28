@@ -23,9 +23,9 @@
             <button class="mobile-menu-btn">☰</button>
             <nav>
                 <ul>
-                    <li><a href="index.html" class="nav-link active">Главная</a></li>
-                    <li><a href="items.html" class="nav-link">Элементы</a></li>
-                    <li><a href="categ.html" class="nav-link">Категории</a></li>
+                    <li><a href="#home" class="nav-link active">Главная</a></li>
+                    <li><a href="#items" class="nav-link">Элементы</a></li>
+                    <li><a href="#categories" class="nav-link">Категории</a></li>
                     <li><a href="#about" class="nav-link">О проекте</a></li>
                 </ul>
             </nav>
@@ -36,7 +36,7 @@
     <main>
         <!-- Хлебные крошки -->
         <nav class="breadcrumbs" id="breadcrumbs">
-            <a href="index.html">Главная</a>
+            <a href="#home">Главная</a>
         </nav>
 
         <!-- Главная страница -->
@@ -52,6 +52,42 @@
             <h2>Избранные элементы</h2>
             <div class="items-grid" id="featured-items">
                 <!-- Избранные элементы будут загружены через JS -->
+            </div>
+        </section>
+
+        <!-- Страница элементов -->
+        <section id="items-page" class="page">
+            <h1 class="page-title">Все элементы</h1>
+            
+            <button class="add-item-btn" id="add-item-btn">
+                <span>+</span> Добавить элемент
+            </button>
+            
+            <div class="search-container">
+                <input type="text" class="search-input" placeholder="Поиск по названию, описанию или мета-тегам...">
+                <button class="search-btn">Найти</button>
+            </div>
+            
+            <div class="items-grid" id="all-items">
+                <!-- Все элементы будут загружены через JS -->
+            </div>
+            
+            <div class="pagination" id="pagination">
+                <!-- Пагинация будет создана через JS -->
+            </div>
+        </section>
+
+        <!-- Страница категорий -->
+        <section id="categories-page" class="page">
+            <h1 class="page-title">Категории</h1>
+            <p>Выберите категорию для просмотра соответствующих элементов:</p>
+            
+            <div class="categories-grid" id="categories-container">
+                <!-- Категории будут загружены через JS -->
+            </div>
+            
+            <div class="category-items" id="category-items-container">
+                <!-- Элементы выбранной категории будут загружены здесь -->
             </div>
         </section>
 
@@ -73,6 +109,161 @@
 противоречащие данным на этом ресурсе, по умолчанию считаются ошибочными.</p>
         </section>
     </main>
+
+    <!-- Модальное окно добавления элемента -->
+    <div class="modal" id="add-item-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h2 class="modal-title">Добавление нового элемента</h2>
+                <button class="close-modal">&times;</button>
+            </div>
+            <div class="modal-body">
+                <div class="add-item-tabs">
+                    <button class="tab-btn active" data-tab="instructions">📋 Инструкция</button>
+                    <button class="tab-btn" data-tab="template">⚙️ Шаблон</button>
+                    <button class="tab-btn" data-tab="contact">📧 Контакты</button>
+                </div>
+
+                <!-- Вкладка инструкций -->
+                <div class="tab-content active" id="instructions-tab">
+                    <h3>Как добавить элемент в локальную версию:</h3>
+                    <div class="steps-grid">
+                        <div class="step-card">
+                            <div class="step-number">1</div>
+                            <div class="step-content">
+                                <strong>Скопируйте шаблон</strong>
+                                <p>Перейдите во вкладку "Шаблон" и скопируйте готовый код</p>
+                            </div>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-number">2</div>
+                            <div class="step-content">
+                                <strong>Настройте данные</strong>
+                                <p>Замените плейсхолдеры на вашу информацию</p>
+                            </div>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-number">3</div>
+                            <div class="step-content">
+                                <strong>Добавьте в код</strong>
+                                <p>Вставьте элемент в массив <code>items</code> в файле script.js</p>
+                            </div>
+                        </div>
+                        <div class="step-card">
+                            <div class="step-number">4</div>
+                            <div class="step-content">
+                                <strong>Сохраните изменения</strong>
+                                <p>Обновите страницу чтобы увидеть новый элемент</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="info-box">
+                        <h4>💡 Важная информация:</h4>
+                        <p>Этот функционал работает только в локальной версии сайта. Изменения будут видны только вам.</p>
+                        <p><strong>Чтобы добавить элемент на основной сайт</strong> - свяжитесь с администратором через вкладку "Контакты".</p>
+                    </div>
+                </div>
+
+                <!-- Вкладка шаблона -->
+                <div class="tab-content" id="template-tab">
+                    <h3>Готовый шаблон для копирования:</h3>
+                    <div class="code-container">
+                        <div class="code-header">
+                            <span>Код элемента</span>
+                            <button class="copy-btn" id="copy-code-btn" title="Скопировать код">
+                                📋 Копировать
+                            </button>
+                        </div>
+                        <div class="code-block" id="item-code-template">
+{
+    id: items.length + 1,
+    title: "Название вашего ресурса",
+    shortDescription: "Краткое описание вашего ресурса",
+    description: "Полное описание вашего ресурса",
+    image: "images/ваше-изображение.png",
+    tags: ["тег1", "тег2", "тег3"],
+    url: "https://ссылка-на-ресурс.com"
+}</div>
+                    </div>
+
+                    <div class="fields-explanation">
+                        <h4>📖 Пояснения к полям:</h4>
+                        <div class="fields-grid">
+                            <div class="field-item">
+                                <strong>id</strong>
+                                <span>Уникальный номер (автоматически увеличивается)</span>
+                            </div>
+                            <div class="field-item">
+                                <strong>title</strong>
+                                <span>Название ресурса (максимум 60 символов)</span>
+                            </div>
+                            <div class="field-item">
+                                <strong>shortDescription</strong>
+                                <span>Краткое описание для карточки (рекомендуется 60-120 символов)</span>
+                            </div>
+                            <div class="field-item">
+                                <strong>description</strong>
+                                <span>Полное описание для статьи (можно несколько абзацев)</span>
+                            </div>
+                            <div class="field-item">
+                                <strong>image</strong>
+                                <span>Путь к изображению (формат: PNG/JPG, размер: 280×180px)</span>
+                            </div>
+                            <div class="field-item">
+                                <strong>tags</strong>
+                                <span>Массив тегов для поиска (3-5 релевантных тегов)</span>
+                            </div>
+                            <div class="field-item">
+                                <strong>url</strong>
+                                <span>Действующая ссылка на ресурс (обязательно https://)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Вкладка контактов -->
+                <div class="tab-content" id="contact-tab">
+                    <div class="contact-info">
+                        <div class="contact-header">
+                            <h3>📧 Добавление на основной сайт</h3>
+                            <p>Хотите чтобы ваш ресурс появился на основном сайте Хранилища?</p>
+                        </div>
+                        
+                        <div class="contact-details">
+                            <div class="contact-method">
+                                <div class="contact-icon">📧</div>
+                                <div class="contact-content">
+                                    <strong>Email администратора</strong>
+                                    <a href="mailto:roll3ogurec0@gmail.com" class="contact-link">
+                                        roll3ogurec0@gmail.com
+                                    </a>
+                                    <small>Владелец Хранилища</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="submission-guide">
+                            <h4>📋 Что отправить:</h4>
+                            <ul>
+                                <li>Название вашего ресурса</li>
+                                <li>Краткое описание</li>
+                                <li>Полное описание (если есть)</li>
+                                <li>Ссылку на сайт/ресурс</li>
+                                <li>Изображение (если есть)</li>
+                                <li>Ключевые теги/категории</li>
+                            </ul>
+                        </div>
+
+                        <div class="info-box">
+                            <h4>⚠️ Внимание</h4>
+                            <p>На основном сайте размещаются только проверенные и качественные ресурсы. Администратор оставляет за собой право отказать в добавлении без объяснения причин.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
     <!-- Футер -->
     <footer>
