@@ -224,8 +224,8 @@ function openArticleFromUrl() {
     if (articleId) {
         const item = items.find(item => item.id === parseInt(articleId));
         if (item) {
-            // ОБНОВЛЯЕМ МЕТАТЕГИ
-            updateMetaTagsForArticle(item);
+            // Меняем title сразу при загрузке с параметром
+            document.title = `${item.title} | Хранилище`;
             
             // Небольшая задержка, чтобы страница успела загрузиться
             setTimeout(() => {
@@ -364,7 +364,12 @@ const shareHandlers = {
 
 // Функция показа модального окна с полной статьей
 function showArticleModal(item) {
-    updateMetaTagsForArticle(item);
+    // Сохраняем текущий title
+    const previousTitle = document.title;
+    
+    // Меняем title на статью
+    document.title = `${item.title} | Хранилище`;
+    
     // Добавляем параметр в URL при открытии модалки
     const url = new URL(window.location);
     url.searchParams.set('article', item.id);
@@ -385,9 +390,6 @@ function showArticleModal(item) {
         z-index: 1000;
         padding: 20px;
     `;
-    
-    // Создаём URL для копирования
-    const articleUrl = `${window.location.origin}${window.location.pathname}?article=${item.id}`;
     
     modal.innerHTML = `
         <div class="modal-content" style="
@@ -449,12 +451,21 @@ function showArticleModal(item) {
     
     document.body.appendChild(modal);
     
-    // Функция закрытия модалки и очистки URL
+    // Функция закрытия модалки
     const closeModal = () => {
+        // Восстанавливаем оригинальный title
+        document.title = previousTitle;
+        
+        // Удаляем модалку
         document.body.removeChild(modal);
+        
+        // Очищаем URL
         const cleanUrl = new URL(window.location);
         cleanUrl.searchParams.delete('article');
         window.history.replaceState({}, '', cleanUrl);
+        
+        // Удаляем обработчик Escape
+        document.removeEventListener('keydown', handleEscape);
     };
     
     // Закрытие модального окна
@@ -473,8 +484,9 @@ function showArticleModal(item) {
     
     // Копирование ссылки на статью
     modal.querySelector('.copy-link-btn').addEventListener('click', () => {
+        const articleUrl = `${window.location.origin}${window.location.pathname}?article=${item.id}`;
         navigator.clipboard.writeText(articleUrl).then(() => {
-            alert('✅ Ссылка на статью скопирована!');
+            alert('✅ Ссылка скопирована!');
         });
     });
     
@@ -482,7 +494,6 @@ function showArticleModal(item) {
     const handleEscape = (e) => {
         if (e.key === 'Escape') {
             closeModal();
-            document.removeEventListener('keydown', handleEscape);
         }
     };
     document.addEventListener('keydown', handleEscape);
@@ -917,4 +928,14 @@ function setupEventListeners() {
             addItemModal.classList.remove('active');
         }
     });
+
+    // Обработка кнопки "Назад" в браузере
+window.addEventListener('popstate', function() {
+    const articleId = getUrlParam('article');
+    if (!articleId) {
+        // Если вышли со статьи (нет параметра), восстанавливаем оригинальный title
+        const originalTitle = "Хранилище | Управление цифровыми ресурсами"; // или другой
+        document.title = originalTitle;
+    }
+});
 }
