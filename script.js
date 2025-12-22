@@ -951,3 +951,70 @@ window.addEventListener('popstate', function() {
     }
 });
 }
+
+// ... весь ваш существующий код ...
+
+// === ДОБАВЬТЕ ЭТО В САМЫЙ КОНЕЦ ФАЙЛА ===
+
+// Функция для генерации sitemap (только для разработки)
+function generateSitemap() {
+    let sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+    
+    <url>
+        <loc>https://timoshamoscow.github.io/hranilishe.github.io/</loc>
+        <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>1.0</priority>
+    </url>
+    
+    <url>
+        <loc>https://timoshamoscow.github.io/hranilishe.github.io/items.html</loc>
+        <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+    </url>
+    
+    <url>
+        <loc>https://timoshamoscow.github.io/hranilishe.github.io/categ.html</loc>
+        <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+        <changefreq>daily</changefreq>
+        <priority>0.9</priority>
+    </url>`;
+    
+    items.forEach(item => {
+        sitemap += `
+    <url>
+        <loc>https://timoshamoscow.github.io/hranilishe.github.io/?article=${item.id}</loc>
+        <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+        <changefreq>weekly</changefreq>
+        <priority>0.8</priority>
+    </url>`;
+    });
+    
+    sitemap += `
+    
+    <url>
+        <loc>https://timoshamoscow.github.io/hranilishe.github.io/privacy.html</loc>
+        <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.3</priority>
+    </url>
+    
+    <url>
+        <loc>https://timoshamoscow.github.io/hranilishe.github.io/terms.html</loc>
+        <lastmod>${new Date().toISOString().split('T')[0]}</lastmod>
+        <changefreq>monthly</changefreq>
+        <priority>0.3</priority>
+    </url>
+
+</urlset>`;
+    
+    return sitemap;
+}
+
+// Для использования:
+// 1. Откройте консоль браузера (F12)
+// 2. Введите: generateSitemap()
+// 3. Скопируйте результат
+// 4. Вставьте в файл sitemap.xml
