@@ -1,3 +1,7 @@
+// Сохраняем оригинальный title и description
+const originalTitle = document.title;
+const originalDescription = document.querySelector('meta[name="description"]')?.content || '';
+
 // Данные элементов
 const items = [
     {
