@@ -1413,3 +1413,52 @@ function generateStaticArticlePages() {
 // Чтобы сгенерировать страницы, выполните в консоли браузера:
 // generateStaticArticlePages()
 // Затем скопируйте код каждого файла и создайте физические файлы в папке /articles/
+
+// Простой переключатель темы
+document.addEventListener('DOMContentLoaded', function() {
+    const themeBtn = document.createElement('button');
+    themeBtn.innerHTML = '🌙';
+    themeBtn.title = 'Переключить тему';
+    themeBtn.style.cssText = `
+        position: fixed;
+        bottom: 20px;
+        right: 20px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #4A90E2;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 1.5rem;
+        z-index: 1000;
+        box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+        transition: all 0.3s;
+    `;
+    
+    document.body.appendChild(themeBtn);
+    
+    themeBtn.addEventListener('click', function() {
+        const html = document.documentElement;
+        const isDark = html.getAttribute('data-theme') === 'dark';
+        
+        if (isDark) {
+            html.removeAttribute('data-theme');
+            localStorage.removeItem('hranilishe_theme');
+            themeBtn.innerHTML = '🌙';
+            themeBtn.style.background = '#4A90E2';
+        } else {
+            html.setAttribute('data-theme', 'dark');
+            localStorage.setItem('hranilishe_theme', 'dark');
+            themeBtn.innerHTML = '☀️';
+            themeBtn.style.background = '#F59E0B';
+        }
+    });
+    
+    // Восстановление темы
+    if (localStorage.getItem('hranilishe_theme') === 'dark') {
+        document.documentElement.setAttribute('data-theme', 'dark');
+        themeBtn.innerHTML = '☀️';
+        themeBtn.style.background = '#F59E0B';
+    }
+});
