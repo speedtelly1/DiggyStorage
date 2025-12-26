@@ -255,7 +255,7 @@ function getCurrentPage() {
         '/items.html': 'items',
         '/categ.html': 'categories', 
         '/index.html': 'home',
-        '/': 'home',
+        'https://timoshamoscow.github.io/hranilishe.github.io/': 'home',
         '/privacy.html': 'privacy',
         '/terms.html': 'terms'
     };
