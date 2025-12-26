@@ -120,10 +120,127 @@
             <h1 class="page-title">Добро пожаловать в Хранилище</h1>
             <p>Профессиональная платформа для управления цифровыми ресурсами с расширенной системой мета-тегов.</p>
             
-            <div class="search-container">
-                <input type="text" class="search-input" placeholder="Поиск по названию, описанию или мета-тегам...">
-                <button class="search-btn">Найти</button>
+<!-- В разделе поиска замените на: -->
+<div class="search-container">
+    <div class="search-input-wrapper">
+        <input type="text" class="search-input" placeholder="Поиск по названию, описанию или мета-тегам...">
+        <button class="search-settings-btn" id="search-settings-btn" title="Настройки поиска">
+            ⚙️
+        </button>
+    </div>
+    <button class="search-btn">Найти</button>
+</div>
+
+<!-- Модальное окно настроек поиска -->
+<div class="modal" id="search-settings-modal">
+    <div class="modal-content">
+        <div class="modal-header">
+            <h2 class="modal-title">⚙️ Настройки поиска</h2>
+            <button class="close-modal">&times;</button>
+        </div>
+        <div class="modal-body">
+            <div class="settings-section">
+                <h3>📁 Поиск по полям:</h3>
+                <div class="settings-grid">
+                    <label class="settings-checkbox">
+                        <input type="checkbox" id="search-title" checked>
+                        <span>Название</span>
+                    </label>
+                    <label class="settings-checkbox">
+                        <input type="checkbox" id="search-description" checked>
+                        <span>Описание</span>
+                    </label>
+                    <label class="settings-checkbox">
+                        <input type="checkbox" id="search-short-description" checked>
+                        <span>Краткое описание</span>
+                    </label>
+                    <label class="settings-checkbox">
+                        <input type="checkbox" id="search-tags" checked>
+                        <span>Теги</span>
+                    </label>
+                    <label class="settings-checkbox">
+                        <input type="checkbox" id="search-author" checked>
+                        <span>Автор</span>
+                    </label>
+                </div>
             </div>
+
+            <div class="settings-section">
+                <h3>👤 Фильтр по автору:</h3>
+                <div class="settings-grid">
+                    <label class="settings-radio">
+                        <input type="radio" name="author-filter" value="all" checked>
+                        <span>Все авторы</span>
+                    </label>
+                    <label class="settings-radio">
+                        <input type="radio" name="author-filter" value="verified">
+                        <span>Только проверенные ✅</span>
+                    </label>
+                    <label class="settings-radio">
+                        <input type="radio" name="author-filter" value="anonymous">
+                        <span>Только анонимы 🎭</span>
+                    </label>
+                    <label class="settings-radio">
+                        <input type="radio" name="author-filter" value="teams">
+                        <span>Только команды 👥</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>📅 Фильтр по дате:</h3>
+                <div class="settings-grid">
+                    <div class="date-range">
+                        <label>От:</label>
+                        <input type="date" id="date-from" class="date-input">
+                    </div>
+                    <div class="date-range">
+                        <label>До:</label>
+                        <input type="date" id="date-to" class="date-input">
+                    </div>
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>🏷️ Фильтр по тегам (выберите до 5):</h3>
+                <div class="tags-filter" id="tags-filter">
+                    <!-- Теги будут загружены через JS -->
+                </div>
+            </div>
+
+            <div class="settings-section">
+                <h3>📊 Сортировка:</h3>
+                <div class="settings-grid">
+                    <label class="settings-radio">
+                        <input type="radio" name="sort" value="relevance" checked>
+                        <span>По релевантности</span>
+                    </label>
+                    <label class="settings-radio">
+                        <input type="radio" name="sort" value="date-desc">
+                        <span>Сначала новые</span>
+                    </label>
+                    <label class="settings-radio">
+                        <input type="radio" name="sort" value="date-asc">
+                        <span>Сначала старые</span>
+                    </label>
+                    <label class="settings-radio">
+                        <input type="radio" name="sort" value="title-asc">
+                        <span>По названию (А-Я)</span>
+                    </label>
+                    <label class="settings-radio">
+                        <input type="radio" name="sort" value="title-desc">
+                        <span>По названию (Я-А)</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="settings-actions">
+                <button class="btn-secondary" id="reset-settings">Сбросить настройки</button>
+                <button class="btn-primary" id="apply-settings">Применить</button>
+            </div>
+        </div>
+    </div>
+</div>
             
             <h2>Избранные элементы</h2>
             <div class="items-grid" id="featured-items">
