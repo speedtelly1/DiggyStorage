@@ -7,6 +7,8 @@ const items = [
     {
         id: 1,
         title: "Тимошка из Москвы",
+        author: "Тимофей",
+        date: "26.12.2025",
         shortDescription: "Канал про Minecraft с геймплеем и проектами",
         description: "Канал с контентом о мире Minecraft: от геймплея до создания проектов. Здесь вы найдете обзоры, гайды и многое другое для любителей этой культовой игры. Регулярные стримы, интересные сборки и советы для новичков.",
         image: "images/tim.png",
@@ -945,6 +947,29 @@ function createItemCard(item) {
         <img src="${item.image}" alt="${item.title}" class="item-image" title="${item.title}">
         <div class="item-content">
             <h3 class="item-title">${item.title}</h3>
+            
+            <!-- БЛОК АВТОРА И ДАТЫ -->
+            <div class="item-meta" style="
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                margin-bottom: 10px;
+                font-size: 0.9rem;
+                color: var(--text-secondary);
+            ">
+                <!-- Иконка и имя автора -->
+                <div class="item-author" style="display: flex; align-items: center; gap: 5px;">
+                    <span style="font-size: 1.1rem;">👤</span>
+                    <span>${item.author || 'Автор неизвестен'}</span>
+                </div>
+                
+                <!-- Дата публикации (можно добавить в массив items) -->
+                <div class="item-date" style="display: flex; align-items: center; gap: 5px;">
+                    <span style="font-size: 1rem;">📅</span>
+                    <span>${item.date || 'Дата неизвестна'}</span>
+                </div>
+            </div>
+            
             <p class="item-description">${displayDescription}</p>
             <div class="item-tags" style="margin-top: 10px; display: flex; flex-wrap: wrap; gap: 5px;">
                 ${item.tags.map(tag => `<span style="background: rgba(74, 144, 226, 0.1); padding: 3px 8px; border-radius: 12px; font-size: 0.8rem; color: var(--primary-dark);">${tag}</span>`).join('')}
