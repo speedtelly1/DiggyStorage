@@ -242,6 +242,40 @@ const items = [
     }
 ];
 
+// В начало script.js после items массива:
+function getCurrentPage() {
+    const path = window.location.pathname;
+    const hash = window.location.hash.substring(1);
+    
+    // Если есть хэш (SPA навигация)
+    if (hash) return hash;
+    
+    // Если открыт отдельный файл
+    const pageMap = {
+        '/items.html': 'items',
+        '/categ.html': 'categories', 
+        '/index.html': 'home',
+        '/': 'home',
+        '/privacy.html': 'privacy',
+        '/terms.html': 'terms'
+    };
+    
+    return pageMap[path] || 'home';
+}
+
+// Обновляем инициализацию
+document.addEventListener('DOMContentLoaded', function() {
+    const currentPage = getCurrentPage();
+    
+    // Если это не SPA страница (отдельный файл)
+    if (!window.location.hash && currentPage !== 'home') {
+        // Активируем соответствующую страницу
+        activatePage(currentPage);
+    }
+    
+    // ... остальная инициализация
+});
+
 // ========== СОХРАНЕНИЕ СОСТОЯНИЯ СТРАНИЦЫ ==========
 
 // Сохранение текущего состояния
