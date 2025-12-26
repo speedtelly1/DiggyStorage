@@ -469,8 +469,29 @@ function showArticleModal(item) {
     // Сохраняем текущий title
     const previousTitle = document.title;
     
-    // Меняем title на статью
-    document.title = `${item.title} | Хранилище`;
+    // СОХРАНЯЕМ И СОЗДАЕМ SEO-ТЕГИ ДЛЯ СТАТЬИ
+    document.title = `${item.title} | Хранилище цифровых ресурсов`;
+    
+    // Обновляем description
+    const metaDesc = document.querySelector('meta[name="description"]');
+    if (metaDesc) {
+        metaDesc.setAttribute('content', item.shortDescription);
+    }
+    
+    // Создаем каноническую ссылку для статьи
+    let canonicalLink = document.querySelector('link[rel="canonical"]');
+    if (!canonicalLink) {
+        canonicalLink = document.createElement('link');
+        canonicalLink.rel = 'canonical';
+        document.head.appendChild(canonicalLink);
+    }
+    canonicalLink.href = `https://timoshamoscow.github.io/hranilishe.github.io/?article=${item.id}`;
+    
+    // Создаем динамические Open Graph теги
+    updateOpenGraphTags(item);
+    
+    // Создаем структурированные данные для статьи
+    createArticleStructuredData(item);
     
     // Добавляем параметр в URL при открытии модалки
     const url = new URL(window.location);
@@ -599,6 +620,53 @@ function showArticleModal(item) {
         }
     };
     document.addEventListener('keydown', handleEscape);
+}
+
+function createArticleStructuredData(item) {
+    // Удаляем старые structured data если есть
+    const oldScript = document.querySelector('script[type="application/ld+json"][data-article]');
+    if (oldScript) {
+        oldScript.remove();
+    }
+    
+    // Создаем новые structured data для статьи
+    const structuredData = {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": `https://timoshamoscow.github.io/hranilishe.github.io/?article=${item.id}`
+        },
+        "headline": item.title,
+        "description": item.shortDescription,
+        "image": item.image.startsWith('http') ? item.image : `https://timoshamoscow.github.io/hranilishe.github.io/${item.image}`,
+        "datePublished": "2025-12-26",
+        "dateModified": "2025-12-26",
+        "author": {
+            "@type": "Person",
+            "name": "Тимофей",
+            "url": "https://timoshamoscow.github.io/hranilishe.github.io/"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Хранилище",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://timoshamoscow.github.io/hranilishe.github.io/images/hranit.png",
+                "width": "256",
+                "height": "256"
+            }
+        },
+        "articleBody": item.description,
+        "keywords": item.tags.join(', '),
+        "inLanguage": "ru-RU"
+    };
+    
+    const script = document.createElement('script');
+    script.type = 'application/ld+json';
+    script.setAttribute('data-article', 'true');
+    script.textContent = JSON.stringify(structuredData);
+    document.head.appendChild(script);
 }
 
 // Функции для хлебных крошек
@@ -1158,3 +1226,150 @@ document.querySelectorAll('.nav-link').forEach(link => {
         setTimeout(savePageState, 200);
     });
 });
+
+// Функция для генерации статических страниц статей
+function generateStaticArticlePages() {
+    console.log('=== ГЕНЕРАЦИЯ SEO-СТРАНИЦ ДЛЯ СТАТЕЙ ===');
+    
+    items.forEach(item => {
+        console.log(`Генерируем страницу для: ${item.title}`);
+        
+        // Код HTML для страницы статьи
+        const articleHTML = `
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${item.title} | Хранилище цифровых ресурсов</title>
+    <meta name="description" content="${item.shortDescription}">
+    <meta name="keywords" content="${item.tags.join(', ')}, хранилище, цифровые ресурсы">
+    <meta name="author" content="Тимофей">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="${item.title}">
+    <meta property="og:description" content="${item.shortDescription}">
+    <meta property="og:image" content="https://timoshamoscow.github.io/hranilishe.github.io/${item.image}">
+    <meta property="og:url" content="https://timoshamoscow.github.io/hranilishe.github.io/articles/article-${item.id}.html">
+    <meta property="og:type" content="article">
+    <meta property="og:site_name" content="Хранилище">
+    
+    <!-- Twitter -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="${item.title}">
+    <meta name="twitter:description" content="${item.shortDescription}">
+    <meta name="twitter:image" content="https://timoshamoscow.github.io/hranilishe.github.io/${item.image}">
+    
+    <!-- Canonical -->
+    <link rel="canonical" href="https://timoshamoscow.github.io/hranilishe.github.io/articles/article-${item.id}.html">
+    
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": "${item.title}",
+        "description": "${item.shortDescription}",
+        "image": "https://timoshamoscow.github.io/hranilishe.github.io/${item.image}",
+        "author": {
+            "@type": "Person",
+            "name": "Тимофей"
+        },
+        "publisher": {
+            "@type": "Organization",
+            "name": "Хранилище",
+            "logo": {
+                "@type": "ImageObject",
+                "url": "https://timoshamoscow.github.io/hranilishe.github.io/images/hranit.png"
+            }
+        },
+        "datePublished": "2025-12-26",
+        "dateModified": "2025-12-26",
+        "mainEntityOfPage": {
+            "@type": "WebPage",
+            "@id": "https://timoshamoscow.github.io/hranilishe.github.io/articles/article-${item.id}.html"
+        },
+        "articleBody": "${item.description.replace(/"/g, '\\"').replace(/\n/g, ' ')}"
+    }
+    </script>
+    
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            max-width: 800px; 
+            margin: 0 auto; 
+            padding: 20px; 
+            line-height: 1.6;
+        }
+        .back-link { 
+            display: inline-block; 
+            margin-bottom: 20px; 
+            color: #4A90E2; 
+            text-decoration: none;
+        }
+        .article-title { 
+            color: #2c3e50; 
+            margin-bottom: 10px;
+        }
+        .article-image { 
+            max-width: 100%; 
+            height: auto; 
+            margin: 20px 0;
+        }
+        .article-content { 
+            margin-top: 20px; 
+            font-size: 1.1em;
+        }
+        .tags { 
+            margin-top: 20px;
+        }
+        .tag { 
+            display: inline-block; 
+            background: #f0f8ff; 
+            padding: 5px 10px; 
+            margin-right: 5px; 
+            border-radius: 3px;
+        }
+    </style>
+</head>
+<body>
+    <a href="https://timoshamoscow.github.io/hranilishe.github.io/" class="back-link">← Назад в Хранилище</a>
+    
+    <h1 class="article-title">${item.title}</h1>
+    
+    <img src="https://timoshamoscow.github.io/hranilishe.github.io/${item.image}" alt="${item.title}" class="article-image">
+    
+    <div class="article-content">
+        ${item.description.split('\n').map(p => `<p>${p}</p>`).join('')}
+    </div>
+    
+    <div class="tags">
+        <strong>Теги:</strong>
+        ${item.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+    </div>
+    
+    <p style="margin-top: 30px;">
+        <a href="${item.url}" target="_blank" style="background: #4A90E2; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">
+            Перейти к ресурсу
+        </a>
+    </p>
+    
+    <script>
+        // Перенаправляем на главную страницу с параметром article
+        if (!window.location.search.includes('redirected')) {
+            window.location.replace('https://timoshamoscow.github.io/hranilishe.github.io/?article=${item.id}&redirected=true');
+        }
+    </script>
+</body>
+</html>`;
+
+        // Выводим код для копирования
+        console.log(`\n=== article-${item.id}.html ===`);
+        console.log(articleHTML);
+        console.log('\n--- КОНЕЦ ФАЙЛА ---\n');
+    });
+}
+
+// Чтобы сгенерировать страницы, выполните в консоли браузера:
+// generateStaticArticlePages()
+// Затем скопируйте код каждого файла и создайте физические файлы в папке /articles/
