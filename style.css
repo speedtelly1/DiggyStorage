@@ -1207,3 +1207,25 @@ footer {
     width: 14px;
     height: 14px;
 }
+
+/* В style.css */
+@keyframes badgeAppear {
+    0% { transform: scale(0); opacity: 0; }
+    70% { transform: scale(1.2); opacity: 1; }
+    100% { transform: scale(1); opacity: 1; }
+}
+
+.verified-badge {
+    animation: badgeAppear 0.5s ease-out;
+}
+
+/* В style.css */
+.author-unknown {
+    color: var(--text-secondary);
+    font-style: italic;
+}
+
+.author-verified {
+    color: var(--primary-color);
+    font-weight: 500;
+}
