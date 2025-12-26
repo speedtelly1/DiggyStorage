@@ -1139,3 +1139,71 @@ footer {
 .article-card:hover::before {
     left: 100%;
 }
+
+/* Стили для галочки проверки */
+.verified-badge {
+    position: relative;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.verified-badge:hover {
+    transform: scale(1.1);
+}
+
+.verified-badge svg {
+    filter: drop-shadow(0 2px 4px rgba(29, 161, 242, 0.3));
+}
+
+.verified-badge::after {
+    content: 'Проверено';
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--card-bg);
+    color: var(--text-primary);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s;
+    pointer-events: none;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    z-index: 100;
+}
+
+.verified-badge:hover::after {
+    opacity: 1;
+}
+
+/* Анимация пульсации для галочки */
+@keyframes pulse {
+    0% { transform: scale(1); }
+    50% { transform: scale(1.1); }
+    100% { transform: scale(1); }
+}
+
+.verified-badge.pulse {
+    animation: pulse 1s ease-in-out;
+}
+
+/* Для модального окна статьи */
+.article-verified {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(29, 161, 242, 0.1);
+    padding: 4px 10px;
+    border-radius: 20px;
+    color: #1DA1F2;
+    font-size: 0.9rem;
+    margin-left: 10px;
+}
+
+.article-verified svg {
+    width: 14px;
+    height: 14px;
+}
