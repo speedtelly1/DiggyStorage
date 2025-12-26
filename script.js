@@ -195,6 +195,90 @@ const items = [
     }
 ];
 
+// ========== СОХРАНЕНИЕ СОСТОЯНИЯ СТРАНИЦЫ ==========
+
+// Сохранение текущего состояния
+function savePageState() {
+    // Проверяем, есть ли активная страница
+    const activeLink = document.querySelector('.nav-link.active');
+    const activePage = activeLink ? activeLink.getAttribute('href').substring(1) : 'home';
+    
+    const state = {
+        // Активная страница навигации
+        activePage: activePage,
+        
+        // Номер страницы пагинации (только для страницы элементов)
+        currentPage: document.querySelector('.pagination button.active')?.textContent || '1',
+        
+        // Текст поиска (если есть)
+        searchQuery: document.querySelector('.search-input')?.value || '',
+        
+        // Активная категория (только для страницы категорий)
+        activeCategory: document.querySelector('.category-card.active')?.dataset.category || '',
+        
+        // Прокрутка страницы
+        scrollPosition: window.scrollY
+    };
+    
+    localStorage.setItem('hranilishe_page_state', JSON.stringify(state));
+}
+
+// Восстановление состояния
+function restorePageState() {
+    const savedState = localStorage.getItem('hranilishe_page_state');
+    
+    if (savedState) {
+        const state = JSON.parse(savedState);
+        
+        // Активируем соответствующую страницу
+        if (state.activePage && state.activePage !== 'home') {
+            setTimeout(() => {
+                const targetLink = document.querySelector(`.nav-link[href="#${state.activePage}"]`);
+                if (targetLink && !targetLink.classList.contains('active')) {
+                    targetLink.click();
+                }
+            }, 100);
+        }
+        
+        // Восстанавливаем поиск если есть
+        if (state.searchQuery) {
+            setTimeout(() => {
+                const searchInput = document.querySelector('.search-input');
+                if (searchInput && !searchInput.value) {
+                    searchInput.value = state.searchQuery;
+                    
+                    // Если есть поисковый запрос, выполняем поиск
+                    if (state.searchQuery.trim()) {
+                        const searchBtn = document.querySelector('.search-btn');
+                        if (searchBtn) {
+                            setTimeout(() => {
+                                performSearch(state.searchQuery);
+                            }, 200);
+                        }
+                    }
+                }
+            }, 300);
+        }
+        
+        // Восстанавливаем пагинацию
+        if (state.currentPage && state.currentPage !== '1') {
+            setTimeout(() => {
+                const paginationBtn = document.querySelector(`.pagination button:nth-child(${state.currentPage})`);
+                if (paginationBtn && !paginationBtn.classList.contains('active')) {
+                    paginationBtn.click();
+                }
+            }, 500);
+        }
+        
+        // Восстанавливаем прокрутку
+        setTimeout(() => {
+            if (state.scrollPosition > 0) {
+                window.scrollTo(0, state.scrollPosition);
+            }
+        }, 800);
+    }
+}
+
 function updateMetaTagsForArticle(item) {
     // Динамически обновляем метатеги
     document.title = `${item.title} | Хранилище цифровых ресурсов`;
@@ -563,10 +647,13 @@ function setupPagination() {
             document.querySelectorAll('.pagination button').forEach(btn => {
                 btn.classList.remove('active');
             });
-            button.classList.add('active');
-            
+        button.classList.add('active');
+    
             // Показываем элементы для выбранной страницы
             showPage(i, itemsPerPage);
+    
+            // СОХРАНЯЕМ СОСТОЯНИЕ
+            setTimeout(savePageState, 100);
         });
         
         if (i === 1) button.classList.add('active');
@@ -676,6 +763,9 @@ function performSearch(query) {
         `;
     }
     
+    // Сохраняем состояние поиска
+    setTimeout(savePageState, 100);
+    
     return filteredItems;
 }
 
@@ -720,6 +810,8 @@ function renderGeneralCategories() {
 
 // Показать элементы категории
 function showCategoryItems(categoryName, categoryTags) {
+    // Сохраняем состояние
+    setTimeout(savePageState, 100);
     const filteredItems = items.filter(item => 
         item.tags.some(tag => 
             categoryTags.some(categoryTag => 
@@ -727,6 +819,7 @@ function showCategoryItems(categoryName, categoryTags) {
             )
         )
     );
+    
     
     if (filteredItems.length === 0) {
         categoryItemsContainer.innerHTML = `
@@ -1036,3 +1129,32 @@ function generateSitemap() {
 // 2. Введите: generateSitemap()
 // 3. Скопируйте результат
 // 4. Вставьте в файл sitemap.xml
+
+// ========== ИНИЦИАЛИЗАЦИЯ СОХРАНЕНИЯ СОСТОЯНИЯ ==========
+
+// Восстанавливаем состояние страницы при загрузке
+window.addEventListener('load', function() {
+    // Небольшая задержка чтобы все успело загрузиться
+    setTimeout(restorePageState, 300);
+});
+
+// Сохраняем состояние при закрытии/обновлении страницы
+window.addEventListener('beforeunload', savePageState);
+
+// Сохраняем состояние при прокрутке (с ограничением частоты)
+let scrollSaveTimeout;
+window.addEventListener('scroll', () => {
+    if (!scrollSaveTimeout) {
+        scrollSaveTimeout = setTimeout(() => {
+            savePageState();
+            scrollSaveTimeout = null;
+        }, 1000);
+    }
+});
+
+// Также сохраняем при клике на навигацию
+document.querySelectorAll('.nav-link').forEach(link => {
+    link.addEventListener('click', () => {
+        setTimeout(savePageState, 200);
+    });
+});
