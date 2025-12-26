@@ -947,7 +947,6 @@ function renderAllItems(itemsToRender = items) {
 }
 
 // Создание карточки элемента
-// Создание карточки элемента
 function createItemCard(item) {
     const card = document.createElement('div');
     card.className = 'item-card glass-effect';
@@ -976,7 +975,7 @@ function createItemCard(item) {
             <div style="display: flex; align-items: center; gap: 5px;">
                 <span style="font-size: 1rem;">👤</span>
                 <span style="display: flex; align-items: center; gap: 5px;">
-                    ${hasAuthor ? item.author : '<span style="color: var(--text-secondary); font-style: italic;">Аноним</span>'}
+                    ${hasAuthor ? item.author : '<span style="color: var(--text-secondary);">Аноним</span>'}
                     <!-- Галочка если есть автор -->
                     ${hasAuthor ? `
                     <span class="verified-badge" title="Проверенный автор" style="
