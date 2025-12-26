@@ -70,6 +70,18 @@
         </div>
     </footer>
 
+    <script>
+// Автоматически активируем вкладку "Категории" при загрузке categ.html
+document.addEventListener('DOMContentLoaded', function() {
+    setTimeout(() => {
+        const categLink = document.querySelector('a[href="#categories"]');
+        if (categLink && !categLink.classList.contains('active')) {
+            categLink.click();
+        }
+    }, 100);
+});
+</script>
+
     <script src="script.js"></script>
 
 </body>
