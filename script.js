@@ -584,7 +584,7 @@ function showArticleModal(item) {
                     padding: 10px 20px;
                     border-radius: 6px;
                     cursor: pointer;
-                ">Копировать ссылку</button>
+                ">Скопировать ссылку</button>
             </div>
         </div>
     `;
@@ -975,13 +975,13 @@ function createItemCard(item) {
                 <!-- Иконка и имя автора -->
                 <div class="item-author" style="display: flex; align-items: center; gap: 5px;">
                     <span style="font-size: 1.1rem;">👤</span>
-                    <span>${item.author || 'Автор неизвестен'}</span>
+                    <span>${item.author || 'Аноним'}</span>
                 </div>
                 
                 <!-- Дата публикации (можно добавить в массив items) -->
                 <div class="item-date" style="display: flex; align-items: center; gap: 5px;">
                     <span style="font-size: 1rem;">📅</span>
-                    <span>${item.date || 'Дата неизвестна'}</span>
+                    <span>${item.date || 'Неизвестно'}</span>
                 </div>
             </div>
             
