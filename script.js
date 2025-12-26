@@ -194,6 +194,17 @@ const items = [
         image: "images/itd.png",
         tags: ["пост", "популярность", "итд", "1место"],
         url: "https://xn--d1ah4a.com/@timosha_moscow/post/cc325e1d-e2c8-4d84-b533-982035f8610b"
+    },
+    {
+        id: 22,
+        title: "Dylan",
+        author: "Paul",
+        date: "26.12.2025",
+        shortDescription: "ИИ от разработчиков. Для разработчиков и не только",
+        description: "ИИ от разработчиков. Для разработчиков и не только",
+        image: "images/soon.png",
+        tags: ["разработка", "образование", "ии"],
+        url: "https://t.me/Dylan_TheOmniscient_bot"
     }
 ];
 
