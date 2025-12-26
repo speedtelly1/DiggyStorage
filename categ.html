@@ -84,5 +84,36 @@ document.addEventListener('DOMContentLoaded', function() {
 
     <script src="script.js"></script>
 
+    <script>
+// Определяем, какая страница открыта
+document.addEventListener('DOMContentLoaded', function() {
+    // Определяем текущую страницу по имени файла
+    const currentPage = window.location.pathname.split('/').pop();
+    
+    // Маппинг файлов -> секций SPA
+    const pageMap = {
+        'items.html': 'items',
+        'categ.html': 'categories',
+        'index.html': 'home',
+        'privacy.html': 'privacy',
+        'terms.html': 'terms'
+    };
+    
+    const targetSection = pageMap[currentPage] || 'home';
+    
+    // Если это не главная страница, активируем нужную секцию
+    if (targetSection !== 'home') {
+        // Ждем загрузки основного скрипта
+        setTimeout(() => {
+            // Ищем ссылку на нужную страницу и кликаем
+            const targetLink = document.querySelector(`a[href="#${targetSection}"]`);
+            if (targetLink) {
+                targetLink.click();
+            }
+        }, 100);
+    }
+});
+</script>
+
 </body>
 </html>
