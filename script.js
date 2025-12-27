@@ -2,6 +2,10 @@
 const originalTitle = document.title;
 const originalDescription = document.querySelector('meta[name="description"]')?.content || '';
 
+// authorStatus: "owner", // 🔴 Красная галочка
+// authorStatus: "verified", // 🔵 Голубая галочка
+// authorStatus не указан → ⚪ Серая галочка
+
 // Данные элементов
 const items = [
     {
