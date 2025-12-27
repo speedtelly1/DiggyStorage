@@ -2,12 +2,16 @@
 const originalTitle = document.title;
 const originalDescription = document.querySelector('meta[name="description"]')?.content || '';
 
+// authorStatus: "owner", // 🔴 Красная галочка
+// authorStatus: "verified", // 🔵 Голубая галочка
+// authorStatus не указан → ⚪ Серая галочка
 // Данные элементов
 const items = [
     {
         id: 1,
         title: "Тимошка из Москвы",
         author: "Тимофей",
+        authorStatus: "owner",
         date: "13.11.2025",
         shortDescription: "Канал про Minecraft с геймплеем и проектами",
         description: "Канал с контентом о мире Minecraft: от геймплея до создания проектов. Здесь вы найдете обзоры, гайды и многое другое для любителей этой культовой игры. Регулярные стримы, интересные сборки и советы для новичков.",
