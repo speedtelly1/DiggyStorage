@@ -1225,6 +1225,20 @@ footer {
     font-style: italic;
 }
 
+/* Добавить в style.css */
+@media (prefers-reduced-motion: reduce) {
+  * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* Ленивую загрузку изображений */
+.item-image {
+  loading: lazy;
+}
+
 .author-verified {
     color: var(--primary-color);
     font-weight: 500;
