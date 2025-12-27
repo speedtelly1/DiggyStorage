@@ -2,12 +2,20 @@
 const originalTitle = document.title;
 const originalDescription = document.querySelector('meta[name="description"]')?.content || '';
 
+// В authorType объекте:
+// "founder"    // 👑 Основатель Хранилища
+// "team"       // 👥 Команда  
+// "expert"     // ⭐ Признанный эксперт
+// "verified"   // ✅ Проверенный автор (специальный статус)
+// "default"    // ✅ Автор (обычная галочка, если authorType не указан)
+
 // Данные элементов
 const items = [
     {
         id: 1,
         title: "Тимошка из Москвы",
         author: "Тимофей",
+        authorType: "founder",
         date: "13.11.2025",
         shortDescription: "Канал про Minecraft с геймплеем и проектами",
         description: "Канал с контентом о мире Minecraft: от геймплея до создания проектов. Здесь вы найдете обзоры, гайды и многое другое для любителей этой культовой игры. Регулярные стримы, интересные сборки и советы для новичков.",
