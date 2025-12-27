@@ -316,6 +316,7 @@ async function getCacheInfo() {
                 <div class="add-item-tabs">
                     <button class="tab-btn active" data-tab="instructions">📋 Инструкция</button>
                     <button class="tab-btn" data-tab="template">⚙️ Шаблон</button>
+                    <button class="tab-btn" data-tab="verification">✅ Верификация</button>
                     <button class="tab-btn" data-tab="contact">📧 Контакты</button>
                 </div>
 
@@ -426,6 +427,87 @@ async function getCacheInfo() {
                         </div>
                     </div>
                 </div>
+
+                // В модальном окне добавления элемента:
+<div class="tab-content" id="verification-tab">
+    <h3>✅ Верификация</h3>
+    
+    <div class="verification-steps">
+        <div class="step">
+            <div class="step-number">1</div>
+            <div class="step-content">
+                <h4>📝 Начните с публикаций</h4>
+                <p>Добавьте 5+ качественных ресурсов с указанием авторства</p>
+                <div class="tip">💡 Каждая статья должна быть уникальной и полезной</div>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">2</div>
+            <div class="step-content">
+                <h4>✅ Соблюдайте правила</h4>
+                <ul>
+                    <li>Проверенные источники информации</li>
+                    <li>Оригинальные описания (не копипаст)</li>
+                    <li>Релевантные теги и категории</li>
+                    <li>Рабочие ссылки на ресурсы</li>
+                </ul>
+            </div>
+        </div>
+        
+        <div class="step">
+            <div class="step-number">3</div>
+            <div class="step-content">
+                <h4>📨 Подайте заявку</h4>
+                <p>После 5+ публикаций отправьте запрос на верификацию:</p>
+                <div class="contact-verification">
+                    <a href="mailto:roll3ogurec0@gmail.com?subject=Верификация автора&body=Привет! Я хочу получить голубую галочку. Мои статьи: [ссылки]" 
+                       class="verification-btn">
+                        📧 Запросить верификацию
+                    </a>
+                    <small>Укажите ссылки на ваши лучшие публикации</small>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="verification-benefits">
+        <h4>🎁 Преимущества голубой галочки:</h4>
+        <div class="benefits-grid">
+            <div class="benefit">
+                <span class="benefit-icon">👑</span>
+                <strong>Доверие пользователей</strong>
+                <p>Ваши статьи будут выделяться</p>
+            </div>
+            <div class="benefit">
+                <span class="benefit-icon">📈</span>
+                <strong>Приоритет в поиске</strong>
+                <p>Выше в результатах поиска</p>
+            </div>
+            <div class="benefit">
+                <span class="benefit-icon">🤝</span>
+                <strong>Доступ к статистике</strong>
+                <p>Узнавайте, сколько просмотров у ваших статей</p>
+            </div>
+            <div class="benefit">
+                <span class="benefit-icon">⚡</span>
+                <strong>Быстрая модерация</strong>
+                <p>Ваши новые статьи проверяются быстрее</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="verification-rules">
+        <h4>⚠️ Правила сохранения статуса:</h4>
+        <ul>
+            <li>Не публиковать ложную информацию</li>
+            <li>Не спамить и не дублировать контент</li>
+            <li>Соблюдать авторские права</li>
+            <li>Обновлять устаревшие ссылки</li>
+        </ul>
+        <p class="warning">Статус может быть отозван при нарушении правил</p>
+    </div>
+</div>
 
                 <!-- Вкладка контактов -->
                 <div class="tab-content" id="contact-tab">
