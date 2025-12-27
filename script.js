@@ -976,7 +976,67 @@ function renderAllItems(itemsToRender = items) {
     });
 }
 
-// Создание карточки элемента
+// Создание карточки
+// ========== СИСТЕМА ТИПОВ ГАЛОЧЕК ==========
+const authorTypes = {
+    // Ключ: значение из authorType
+    founder: {
+        icon: "👑",
+        title: "Администратор Хранилища",
+        color: "#F59E0B",
+        badge: "Администратор",
+        svg: `<svg width="14" height="14" viewBox="0 0 24 24" fill="#F59E0B" style="vertical-align: middle;">
+                <path d="M5 16L3 5L8.5 10L12 4L15.5 10L21 5L19 16H5M19 19C19 19.6 18.6 20 18 20H6C5.4 20 5 19.6 5 19V18H19V19Z"/>
+              </svg>`
+    },
+    team: {
+        icon: "👥",
+        title: "Над проектом работает не один человек",
+        color: "#3B82F6",
+        badge: "Команда",
+        svg: `<svg width="14" height="14" viewBox="0 0 24 24" fill="#3B82F6" style="vertical-align: middle;">
+                <path d="M12 5.5A3.5 3.5 0 0 1 15.5 9 3.5 3.5 0 0 1 12 12.5 3.5 3.5 0 0 1 8.5 9 3.5 3.5 0 0 1 12 5.5M5 8C5 6.62 6.22 5.5 7.75 5.5C9.28 5.5 10.5 6.62 10.5 8C10.5 9.38 9.28 10.5 7.75 10.5C6.22 10.5 5 9.38 5 8M16.25 5.5C17.78 5.5 19 6.62 19 8C19 9.38 17.78 10.5 16.25 10.5C14.72 10.5 13.5 9.38 13.5 8C13.5 6.62 14.72 5.5 16.25 5.5M5.5 13.75C5.5 12.37 6.62 11.25 8 11.25C9.38 11.25 10.5 12.37 10.5 13.75V18.5H5.5V13.75M13.5 13.75C13.5 12.37 14.62 11.25 16 11.25C17.38 11.25 18.5 12.37 18.5 13.75V18.5H13.5V13.75Z"/>
+              </svg>`
+    },
+    expert: {
+        icon: "⭐",
+        title: "Признанный эксперт",
+        color: "#10B981",
+        badge: "Эксперт",
+        svg: `<svg width="14" height="14" viewBox="0 0 24 24" fill="#10B981" style="vertical-align: middle;">
+                <path d="M12,17.27L18.18,21L16.54,13.97L22,9.24L14.81,8.62L12,2L9.19,8.62L2,9.24L7.45,13.97L5.82,21L12,17.27Z"/>
+              </svg>`
+    },
+    verified: {
+        icon: "✅",
+        title: "Проверенный автор",
+        color: "#1DA1F2",
+        badge: "Проверено",
+        svg: `<svg width="14" height="14" viewBox="0 0 24 24" fill="#1DA1F2" style="vertical-align: middle;">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>`
+    },
+    // Базовый тип для авторов без authorType
+    default: {
+        icon: "✅",
+        title: "Автор подтвердил информацию",
+        color: "#6B7280",
+        badge: "Автор",
+        svg: `<svg width="14" height="14" viewBox="0 0 24 24" fill="#6B7280" style="vertical-align: middle;">
+                <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+              </svg>`
+    }
+};
+
+// Функция для получения типа автора
+function getAuthorType(item) {
+    if (!item.author || item.author.trim() === '') {
+        return null; // Аноним → нет галочки
+    }
+    return authorTypes[item.authorType] || authorTypes.default;
+}
+
+// ========== ОБНОВЛЁННАЯ ФУНКЦИЯ СОЗДАНИЯ КАРТОЧКИ ==========
 function createItemCard(item) {
     const card = document.createElement('div');
     card.className = 'item-card glass-effect';
@@ -989,50 +1049,117 @@ function createItemCard(item) {
     // Проверяем, есть ли автор и дата
     const hasAuthor = item.author && item.author.trim() !== '';
     const hasDate = item.date && item.date.trim() !== '';
-    const defaultDate = 'Неизвестно'; // Установите свою дату по умолчанию
+    const defaultDate = 'Неизвестно';
     
-    // HTML для мета-информации (автор и дата) - ПОД ЗАГОЛОВКОМ
-    const metaHTML = `
-        <div class="item-meta" style="
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        ">
-            <!-- Автор -->
-            <div style="display: flex; align-items: center; gap: 5px;">
-                <span style="font-size: 1rem;">👤</span>
-                <span style="display: flex; align-items: center; gap: 5px;">
-                    ${hasAuthor ? item.author : '<span style="color: var(--text-secondary);">Аноним</span>'}
-                    <!-- Галочка если есть автор -->
-                    ${hasAuthor ? `
-                    <span class="verified-badge" title="Проверенный автор" style="
-                        color: #1DA1F2;
-                        font-size: 0.9rem;
-                        cursor: help;
-                        display: inline-flex;
-                        align-items: center;
-                        margin-left: 3px;
-                    ">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="#1DA1F2" style="vertical-align: middle;">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                        </svg>
+    // Получаем тип автора
+    const authorType = getAuthorType(item);
+    
+    // Генерируем HTML для мета-информации
+    let metaHTML = '';
+    
+    if (authorType) {
+        // Есть автор и тип галочки
+        metaHTML = `
+            <div class="item-meta" style="
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                margin-bottom: 10px;
+                font-size: 0.9rem;
+            ">
+                <!-- Автор с галочкой -->
+                <div style="display: flex; align-items: center; gap: 8px;" class="author-with-badge">
+                    <span style="display: flex; align-items: center; gap: 5px; color: var(--text-secondary);">
+                        <span style="font-size: 1rem;">👤</span>
+                        <span style="
+                            display: inline-flex;
+                            align-items: center;
+                            gap: 6px;
+                            padding: 4px 10px;
+                            background: ${authorType.color}15;
+                            border-radius: 20px;
+                            color: var(--text-primary);
+                            border: 1px solid ${authorType.color}30;
+                        ">
+                            ${item.author}
+                            <span class="verified-badge special-badge" 
+                                  data-author="${item.author}" 
+                                  data-type="${item.authorType || 'default'}"
+                                  style="
+                                    display: inline-flex;
+                                    align-items: center;
+                                    gap: 2px;
+                                    color: ${authorType.color};
+                                    cursor: help;
+                                ">
+                                ${authorType.svg || authorType.icon}
+                                ${item.authorType ? `<span style="
+                                    font-size: 0.7rem;
+                                    background: ${authorType.color};
+                                    color: white;
+                                    padding: 1px 6px;
+                                    border-radius: 10px;
+                                    margin-left: 4px;
+                                ">${authorType.badge}</span>` : ''}
+                            </span>
+                        </span>
                     </span>
-                    ` : ''}
-                </span>
+                </div>
+                
+                <!-- Дата -->
+                <div style="display: flex; align-items: center; gap: 5px; color: var(--text-secondary);">
+                    <span style="font-size: 1rem;">📅</span>
+                    <span>${hasDate ? item.date : defaultDate}</span>
+                </div>
             </div>
-            
-            <!-- Дата -->
-            <div style="display: flex; align-items: center; gap: 5px;">
-                <span style="font-size: 1rem;">📅</span>
-                <span>${hasDate ? item.date : defaultDate}</span>
+        `;
+    } else if (hasAuthor) {
+        // Есть автор, но нет галочки (не должно быть по логике, но на всякий случай)
+        metaHTML = `
+            <div class="item-meta" style="
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                margin-bottom: 10px;
+                font-size: 0.9rem;
+                color: var(--text-secondary);
+            ">
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <span style="font-size: 1rem;">👤</span>
+                    <span>${item.author}</span>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <span style="font-size: 1rem;">📅</span>
+                    <span>${hasDate ? item.date : defaultDate}</span>
+                </div>
             </div>
-        </div>
-    `;
+        `;
+    } else {
+        // Анонимный автор
+        metaHTML = `
+            <div class="item-meta" style="
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                margin-bottom: 10px;
+                font-size: 0.9rem;
+                color: var(--text-secondary);
+            ">
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <span style="font-size: 1rem;">👤</span>
+                    <span>Аноним</span>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <span style="font-size: 1rem;">📅</span>
+                    <span>${hasDate ? item.date : defaultDate}</span>
+                </div>
+            </div>
+        `;
+    }
     
-    // HTML для заголовка (галочка теперь ТОЛЬКО у автора, а не у заголовка)
+    // HTML для заголовка
     const titleHTML = `<h3 class="item-title">${item.title}</h3>`;
     
     card.innerHTML = `
@@ -1065,18 +1192,25 @@ function createItemCard(item) {
         </div>
     `;
     
-    // Добавляем обработчик для галочки автора (если есть)
-    if (hasAuthor) {
-        const verifiedBadge = card.querySelector('.verified-badge');
-        if (verifiedBadge) {
-            verifiedBadge.addEventListener('click', (e) => {
-                e.stopPropagation();
-                showVerificationTooltip(e.target, item.author);
-            });
-            
-            verifiedBadge.addEventListener('mouseenter', (e) => {
-                showVerificationTooltip(e.target, item.author);
-            });
+    // Добавляем обработчик для специальных галочек
+    const verifiedBadge = card.querySelector('.verified-badge');
+    if (verifiedBadge) {
+        const authorName = verifiedBadge.dataset.author;
+        const badgeType = verifiedBadge.dataset.type;
+        const typeInfo = authorTypes[badgeType] || authorTypes.default;
+        
+        verifiedBadge.addEventListener('click', (e) => {
+            e.stopPropagation();
+            showVerificationTooltip(e.target, authorName, typeInfo);
+        });
+        
+        verifiedBadge.addEventListener('mouseenter', (e) => {
+            showVerificationTooltip(e.target, authorName, typeInfo);
+        });
+        
+        // Добавляем класс для анимации
+        if (badgeType !== 'default') {
+            verifiedBadge.classList.add('special-badge');
         }
     }
     
@@ -1108,11 +1242,41 @@ function createItemCard(item) {
     return card;
 }
 
-// Функция для показа тултипа проверки (оставляем как было)
-function showVerificationTooltip(element, authorName) {
+// ========== ОБНОВЛЁННАЯ ФУНКЦИЯ ТУЛТИПА ==========
+function showVerificationTooltip(element, authorName, typeInfo = null) {
     // Удаляем старый тултип если есть
     const oldTooltip = document.querySelector('.verification-tooltip');
     if (oldTooltip) oldTooltip.remove();
+    
+    let tooltipContent = '';
+    
+    if (typeInfo) {
+        // Специальный тултип для типовых галочек
+        tooltipContent = `
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                <span style="color: ${typeInfo.color}; font-size: 1.2rem;">${typeInfo.icon}</span>
+                <strong>${typeInfo.title}</strong>
+            </div>
+            <p style="margin: 0; color: var(--text-secondary); line-height: 1.4;">
+                Автор <strong>${authorName}</strong> имеет статус <strong style="color: ${typeInfo.color}">${typeInfo.badge}</strong>.
+                ${typeInfo.badge === 'Администратор' ? 'Главный администратор Хранилища.' : ''}
+                ${typeInfo.badge === 'Команда' ? 'Над проектом работает не один человек.' : ''}
+                ${typeInfo.badge === 'Эксперт' ? 'Проверенный специалист в своей области.' : ''}
+                ${typeInfo.badge === 'Проверено' ? 'Автор подтвердил достоверность информации.' : ''}
+            </p>
+        `;
+    } else {
+        // Стандартный тултип
+        tooltipContent = `
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                <span style="color: #1DA1F2; font-size: 1.2rem;">✓</span>
+                <strong>Информация проверена</strong>
+            </div>
+            <p style="margin: 0; color: var(--text-secondary); line-height: 1.4;">
+                Автор <strong>${authorName}</strong> подтвердил достоверность информации в этой статье.
+            </p>
+        `;
+    }
     
     // Создаем новый тултип
     const tooltip = document.createElement('div');
@@ -1131,13 +1295,7 @@ function showVerificationTooltip(element, authorName) {
             color: var(--text-primary);
             backdrop-filter: blur(10px);
         ">
-            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                <span style="color: #1DA1F2; font-size: 1.2rem;">✓</span>
-                <strong>Информация проверена</strong>
-            </div>
-            <p style="margin: 0; color: var(--text-secondary); line-height: 1.4;">
-                Автор <strong>${authorName}</strong> подтвердил достоверность информации в этой статье.
-            </p>
+            ${tooltipContent}
             <div style="
                 position: absolute;
                 bottom: -6px;
