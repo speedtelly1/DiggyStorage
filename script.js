@@ -1090,16 +1090,17 @@ function createItemCard(item) {
                             border: 1px solid ${authorType.color}30;
                         ">
                             ${item.author}
-                            <span class="verified-badge special-badge" 
-                                  data-author="${item.author}" 
-                                  data-type="${item.authorType || 'default'}"
-                                  style="
-                                    display: inline-flex;
-                                    align-items: center;
-                                    gap: 2px;
-                                    color: ${authorType.color};
-                                    cursor: help;
-                                ">
+// Вместо бейджа в HTML:
+${item.authorType ? `<span class="badge-on-hover" style="
+    display: none;
+    font-size: 0.7rem;
+    background: ${authorType.color};
+    color: white;
+    padding: 1px 6px;
+    border-radius: 10px;
+    margin-left: 4px;
+">${authorType.badge}</span>` : ''}
+
                                 ${authorType.svg || authorType.icon}
                                 ${item.authorType ? `<span style="
                                     font-size: 0.7rem;
