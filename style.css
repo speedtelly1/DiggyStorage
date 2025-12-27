@@ -1229,3 +1229,23 @@ footer {
     color: var(--primary-color);
     font-weight: 500;
 }
+
+/* В style.css добавляем: */
+@keyframes pulse {
+    0% { opacity: 1; }
+    50% { opacity: 0.7; }
+    100% { opacity: 1; }
+}
+
+/* Стили для разных цветов галочек */
+.badge-owner svg {
+    filter: drop-shadow(0 0 3px rgba(239, 68, 68, 0.5));
+}
+
+.badge-verified svg {
+    filter: drop-shadow(0 0 2px rgba(29, 161, 242, 0.4));
+}
+
+.badge-default svg {
+    opacity: 0.8;
+}
