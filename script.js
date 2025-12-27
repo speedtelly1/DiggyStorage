@@ -977,6 +977,42 @@ function renderAllItems(itemsToRender = items) {
 }
 
 // Создание карточки элемента
+// ========== СИСТЕМА ЦВЕТНЫХ ГАЛОЧЕК ==========
+const authorBadgeColors = {
+    owner: {
+        color: "#EF4444",     // Красный для владельца
+        title: "Владелец платформы",
+        badge: "Владелец"
+    },
+    verified: {
+        color: "#1DA1F2",     // Голубой для верифицированных
+        title: "Верифицированный автор",
+        badge: "Верифицирован"
+    },
+    default: {
+        color: "#6B7280",     // Серый по умолчанию
+        title: "Автор подтвердил информацию",
+        badge: "Автор"
+    }
+};
+
+// Функция для получения цвета галочки
+function getAuthorBadgeColor(item) {
+    if (!item.author || item.author.trim() === '') {
+        return null; // Аноним → нет галочки
+    }
+    
+    // Проверяем специальные статусы
+    if (item.authorStatus === 'owner') {
+        return authorBadgeColors.owner;
+    } else if (item.authorStatus === 'verified') {
+        return authorBadgeColors.verified;
+    } else {
+        return authorBadgeColors.default;
+    }
+}
+
+// ========== ОБНОВЛЁННАЯ ФУНКЦИЯ СОЗДАНИЯ КАРТОЧКИ ==========
 function createItemCard(item) {
     const card = document.createElement('div');
     card.className = 'item-card glass-effect';
@@ -989,50 +1025,102 @@ function createItemCard(item) {
     // Проверяем, есть ли автор и дата
     const hasAuthor = item.author && item.author.trim() !== '';
     const hasDate = item.date && item.date.trim() !== '';
-    const defaultDate = 'Неизвестно'; // Установите свою дату по умолчанию
+    const defaultDate = 'Неизвестно';
     
-    // HTML для мета-информации (автор и дата) - ПОД ЗАГОЛОВКОМ
-    const metaHTML = `
-        <div class="item-meta" style="
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 10px;
-            font-size: 0.9rem;
-            color: var(--text-secondary);
-        ">
-            <!-- Автор -->
-            <div style="display: flex; align-items: center; gap: 5px;">
-                <span style="font-size: 1rem;">👤</span>
-                <span style="display: flex; align-items: center; gap: 5px;">
-                    ${hasAuthor ? item.author : '<span style="color: var(--text-secondary);">Аноним</span>'}
-                    <!-- Галочка если есть автор -->
-                    ${hasAuthor ? `
-                    <span class="verified-badge" title="Проверенный автор" style="
-                        color: #1DA1F2;
-                        font-size: 0.9rem;
-                        cursor: help;
-                        display: inline-flex;
-                        align-items: center;
-                        margin-left: 3px;
-                    ">
-                        <svg width="14" height="14" viewBox="0 0 24 24" fill="#1DA1F2" style="vertical-align: middle;">
-                            <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
-                        </svg>
+    // Получаем цвет галочки
+    const badgeColor = getAuthorBadgeColor(item);
+    
+    // Генерируем HTML для мета-информации
+    let metaHTML = '';
+    
+    if (badgeColor) {
+        // Есть автор и галочка
+        metaHTML = `
+            <div class="item-meta" style="
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                margin-bottom: 10px;
+                font-size: 0.9rem;
+            ">
+                <!-- Автор с галочкой -->
+                <div style="display: flex; align-items: center; gap: 8px;">
+                    <span style="display: flex; align-items: center; gap: 5px; color: var(--text-secondary);">
+                        <span style="font-size: 1rem;">👤</span>
+                        <span style="display: flex; align-items: center; gap: 5px;">
+                            ${item.author}
+                            <span class="verified-badge" 
+                                  title="${badgeColor.title}"
+                                  style="
+                                    color: ${badgeColor.color};
+                                    font-size: 0.9rem;
+                                    cursor: help;
+                                    display: inline-flex;
+                                    align-items: center;
+                                    margin-left: 3px;
+                                ">
+                                <svg width="14" height="14" viewBox="0 0 24 24" fill="${badgeColor.color}" style="vertical-align: middle;">
+                                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z"/>
+                                </svg>
+                            </span>
+                        </span>
                     </span>
-                    ` : ''}
-                </span>
+                </div>
+                
+                <!-- Дата -->
+                <div style="display: flex; align-items: center; gap: 5px; color: var(--text-secondary);">
+                    <span style="font-size: 1rem;">📅</span>
+                    <span>${hasDate ? item.date : defaultDate}</span>
+                </div>
             </div>
-            
-            <!-- Дата -->
-            <div style="display: flex; align-items: center; gap: 5px;">
-                <span style="font-size: 1rem;">📅</span>
-                <span>${hasDate ? item.date : defaultDate}</span>
+        `;
+    } else if (hasAuthor) {
+        // Есть автор, но нет галочки (на всякий случай)
+        metaHTML = `
+            <div class="item-meta" style="
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                margin-bottom: 10px;
+                font-size: 0.9rem;
+                color: var(--text-secondary);
+            ">
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <span style="font-size: 1rem;">👤</span>
+                    <span>${item.author}</span>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <span style="font-size: 1rem;">📅</span>
+                    <span>${hasDate ? item.date : defaultDate}</span>
+                </div>
             </div>
-        </div>
-    `;
+        `;
+    } else {
+        // Анонимный автор
+        metaHTML = `
+            <div class="item-meta" style="
+                display: flex;
+                align-items: center;
+                gap: 15px;
+                margin-bottom: 10px;
+                font-size: 0.9rem;
+                color: var(--text-secondary);
+            ">
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <span style="font-size: 1rem;">👤</span>
+                    <span>Аноним</span>
+                </div>
+                
+                <div style="display: flex; align-items: center; gap: 5px;">
+                    <span style="font-size: 1rem;">📅</span>
+                    <span>${hasDate ? item.date : defaultDate}</span>
+                </div>
+            </div>
+        `;
+    }
     
-    // HTML для заголовка (галочка теперь ТОЛЬКО у автора, а не у заголовка)
+    // HTML для заголовка
     const titleHTML = `<h3 class="item-title">${item.title}</h3>`;
     
     card.innerHTML = `
@@ -1065,18 +1153,23 @@ function createItemCard(item) {
         </div>
     `;
     
-    // Добавляем обработчик для галочки автора (если есть)
-    if (hasAuthor) {
+    // Добавляем обработчик для галочки автора
+    if (badgeColor) {
         const verifiedBadge = card.querySelector('.verified-badge');
         if (verifiedBadge) {
             verifiedBadge.addEventListener('click', (e) => {
                 e.stopPropagation();
-                showVerificationTooltip(e.target, item.author);
+                showVerificationTooltip(e.target, item.author, badgeColor);
             });
             
             verifiedBadge.addEventListener('mouseenter', (e) => {
-                showVerificationTooltip(e.target, item.author);
+                showVerificationTooltip(e.target, item.author, badgeColor);
             });
+            
+            // Добавляем анимацию для владельца
+            if (item.authorStatus === 'owner') {
+                verifiedBadge.style.animation = 'pulse 2s infinite';
+            }
         }
     }
     
@@ -1108,11 +1201,38 @@ function createItemCard(item) {
     return card;
 }
 
-// Функция для показа тултипа проверки (оставляем как было)
-function showVerificationTooltip(element, authorName) {
+// ========== ОБНОВЛЁННАЯ ФУНКЦИЯ ТУЛТИПА ==========
+function showVerificationTooltip(element, authorName, badgeInfo) {
     // Удаляем старый тултип если есть
     const oldTooltip = document.querySelector('.verification-tooltip');
     if (oldTooltip) oldTooltip.remove();
+    
+    let tooltipContent = '';
+    
+    if (badgeInfo) {
+        tooltipContent = `
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                <span style="color: ${badgeInfo.color}; font-size: 1.2rem;">✓</span>
+                <strong style="color: ${badgeInfo.color}">${badgeInfo.title}</strong>
+            </div>
+            <p style="margin: 0; color: var(--text-secondary); line-height: 1.4;">
+                Автор <strong>${authorName}</strong> ${badgeInfo.badge.toLowerCase()} этого ресурса.
+                ${badgeInfo.badge === 'Владелец' ? 'Основатель и администратор Хранилища.' : ''}
+                ${badgeInfo.badge === 'Верифицирован' ? 'Прошел дополнительную проверку.' : ''}
+                ${badgeInfo.badge === 'Автор' ? 'Подтвердил достоверность информации.' : ''}
+            </p>
+        `;
+    } else {
+        tooltipContent = `
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+                <span style="color: #6B7280; font-size: 1.2rem;">✓</span>
+                <strong>Информация проверена</strong>
+            </div>
+            <p style="margin: 0; color: var(--text-secondary); line-height: 1.4;">
+                Автор <strong>${authorName}</strong> подтвердил достоверность информации.
+            </p>
+        `;
+    }
     
     // Создаем новый тултип
     const tooltip = document.createElement('div');
@@ -1131,13 +1251,7 @@ function showVerificationTooltip(element, authorName) {
             color: var(--text-primary);
             backdrop-filter: blur(10px);
         ">
-            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-                <span style="color: #1DA1F2; font-size: 1.2rem;">✓</span>
-                <strong>Информация проверена</strong>
-            </div>
-            <p style="margin: 0; color: var(--text-secondary); line-height: 1.4;">
-                Автор <strong>${authorName}</strong> подтвердил достоверность информации в этой статье.
-            </p>
+            ${tooltipContent}
             <div style="
                 position: absolute;
                 bottom: -6px;
@@ -1152,7 +1266,7 @@ function showVerificationTooltip(element, authorName) {
         </div>
     `;
     
-    // Позиционируем тултип рядом с галочкой
+    // Позиционируем тултип
     const rect = element.getBoundingClientRect();
     tooltip.style.top = (rect.top - 120) + 'px';
     tooltip.style.left = (rect.left - 140) + 'px';
@@ -1173,6 +1287,34 @@ function showVerificationTooltip(element, authorName) {
             document.removeEventListener('click', removeTooltip);
         }
     });
+}
+    
+    const image = card.querySelector('.item-image');
+    image.addEventListener('click', () => {
+        window.open(item.url, '_blank');
+    });
+    
+    // Обработчик кнопки "Читать"
+    const readMoreBtn = card.querySelector('.read-more-btn');
+    if (readMoreBtn) {
+        readMoreBtn.addEventListener('click', () => {
+            showArticleModal(item);
+        });
+    }
+    
+    // Обработчики для кнопок шаринга
+    const shareOptions = card.querySelectorAll('.share-option');
+    shareOptions.forEach(option => {
+        option.addEventListener('click', (e) => {
+            e.stopPropagation();
+            const platform = option.dataset.platform;
+            if (shareHandlers[platform]) {
+                shareHandlers[platform](item);
+            }
+        });
+    });
+    
+    return card;
 }
 
 // Настройка обработчиков событий
