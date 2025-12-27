@@ -1243,3 +1243,57 @@ footer {
     color: var(--primary-color);
     font-weight: 500;
 }
+
+/* Стили для специальных галочек */
+.special-badge {
+    position: relative;
+    cursor: help;
+    transition: transform 0.2s ease, filter 0.2s ease;
+}
+
+.special-badge:hover {
+    transform: scale(1.1);
+    filter: brightness(1.2);
+}
+
+.special-badge::after {
+    content: attr(data-type);
+    position: absolute;
+    bottom: -25px;
+    left: 50%;
+    transform: translateX(-50%) scale(0.8);
+    background: var(--surface-color);
+    color: var(--text-primary);
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 0.7rem;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s, transform 0.3s;
+    pointer-events: none;
+    border: 1px solid var(--border-color);
+    box-shadow: var(--shadow-sm);
+    z-index: 100;
+    text-transform: capitalize;
+}
+
+.special-badge:hover::after {
+    opacity: 1;
+    transform: translateX(-50%) scale(1);
+}
+
+/* Анимация свечения для особых статусов */
+@keyframes glow {
+    0%, 100% { filter: drop-shadow(0 0 2px currentColor); }
+    50% { filter: drop-shadow(0 0 6px currentColor); }
+}
+
+.badge-founder { animation: glow 3s infinite; }
+.badge-expert { animation: glow 4s infinite 1s; }
+
+/* Стили для разных типов авторов */
+.author-badge-founder { border-color: #F59E0B !important; }
+.author-badge-team { border-color: #3B82F6 !important; }
+.author-badge-expert { border-color: #10B981 !important; }
+.author-badge-verified { border-color: #1DA1F2 !important; }
+.author-badge-default { border-color: #6B7280 !important; }
