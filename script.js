@@ -246,6 +246,18 @@ const items = [
         image: "images/soon.png",
         tags: ["разработка", "образование", "ии"],
         url: "https://t.me/Dylan_TheOmniscient_bot"
+    },
+    {
+        id: 22,
+        title: "Правда о Тайване",
+        author: "Тимофей",
+        authorStatus: "owner",
+        date: "12.04.2026",
+        shortDescription: "Тайвань независимое государство",
+        description: "Тайвань независимое государство, не связан с Китаем, не принадлежит Китаю и вот почему. Некоторые считают (Привет, DeepSeek!), что Тайвань - часть Китая! Почему это не так можно узнать по ссылке на ресурс",
+        image: "images/taipai.png",
+        tags: ["политика", "споры", "вопрос"],
+        url: "https://www.rbc.ru/base/02/12/2024/674d9e519a7947bf21a357c5"
     }
 ];
 
