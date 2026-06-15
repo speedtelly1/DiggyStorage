@@ -258,6 +258,18 @@ const items = [
         image: "images/taipai.png",
         tags: ["политика", "споры", "вопрос"],
         url: "https://www.rbc.ru/base/02/12/2024/674d9e519a7947bf21a357c5"
+    },
+    {
+        id: 23,
+        title: "Приглашение на интервью",
+        author: "Тимошка из Москвы",
+        authorStatus: "verified",
+        date: "15.06.2026",
+        shortDescription: "Приглашаю ВАС на своё интервью!",
+        description: "Здравствуйте! Хотел бы предложить вам прийти на моё интервью (Сняться на моём ютуб канале в подкасте Тимкаст)\nЕсли интересно, анкета по кнопке перейти к ресурсу.\nИнтервью будет выложено на: https://www.youtube.com/@Timosha_MoscowOF",
+        image: "images/tim.png",
+        tags: ["ютуб", "майнкрафт", "игры", "интервью"],
+        url: "https://forms.gle/XB77NwP2upDpjQfQ7"
     }
 ];
 
