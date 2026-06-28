@@ -270,6 +270,17 @@ const items = [
         image: "images/tim.png",
         tags: ["ютуб", "майнкрафт", "игры", "интервью"],
         url: "https://forms.gle/XB77NwP2upDpjQfQ7"
+    },
+    {
+        id: 23,
+        title: ".",
+        author: "Тимофей",
+        authorStatus: "verified",
+        date: "15.06.2026",
+        shortDescription: ".",
+        image: "images/photo_2026-02-26_18-09-14.jpg",
+        tags: ["майнкрафт"],
+        url: "https://timoshamoscow.github.io/test/"
     }
 ];
 
